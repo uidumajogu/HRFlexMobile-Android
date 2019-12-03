@@ -1,0 +1,133 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hr_flex/Common/ColorTheme.dart';
+import 'package:hr_flex/Common/Functions.dart';
+import 'package:hr_flex/Common/InfoWidget.dart';
+import 'package:hr_flex/Screens/LeaveApplicationScreen/ButtonWidget.dart';
+import 'package:hr_flex/Screens/LeaveApplicationScreen/LeaveDatePickerTextField.dart';
+import 'package:hr_flex/Screens/LeaveApplicationScreen/LeaveTextField.dart';
+
+class StartLeaveApplicationCard extends StatelessWidget {
+  final Map<dynamic, dynamic> leaveTypeData;
+  final Widget leaveApplicationStepperWidget;
+  final Function function;
+  final Function(String selectedLeaveDays) leaveDays;
+  final Function(String selectedStartDate) startDate;
+  final String dateErrorText;
+  final String leaveDaysErrorMessage;
+  final Function(String change) onChangeLeaveDays;
+
+  StartLeaveApplicationCard({
+    @required this.leaveTypeData,
+    @required this.leaveApplicationStepperWidget,
+    @required this.function,
+    @required this.leaveDays,
+    @required this.startDate,
+    @required this.dateErrorText,
+    @required this.leaveDaysErrorMessage,
+    @required this.onChangeLeaveDays,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.0),
+      ),
+      child: Padding(
+          padding: EdgeInsets.all(sw(20.0)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "Apply for Leave",
+                        style: TextStyle(
+                          fontSize: sf(14.0),
+                          color: AppColors.accentColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      padding(5.0),
+                      Text(
+                        leaveTypeData["type"].split(" ")[0],
+                        style: TextStyle(
+                          fontSize: sf(18.0),
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  leaveApplicationStepperWidget,
+                ],
+              ),
+              padding(10.0),
+              InfoWidget(
+                description: "Financial Year",
+                text: leaveTypeData["financialYear"] != null
+                    ? leaveTypeData["financialYear"]
+                    : "Not Available",
+                hasDivider: true,
+              ),
+              InfoWidget(
+                description: "Leave Limit",
+                text: leaveTypeData["maximum"] != null
+                    ? "${leaveTypeData["maximum"].toString()} Days"
+                    : "Not Available",
+                hasDivider: true,
+              ),
+              InfoWidget(
+                description: "Earned Days",
+                text: leaveTypeData["earned"] != null
+                    ? "${leaveTypeData["earned"].toString()} Days"
+                    : "Not Available",
+                hasDivider: true,
+              ),
+              InfoWidget(
+                description: "Days Left",
+                text: leaveTypeData["available"] != null
+                    ? "${leaveTypeData["available"].toString()} Days"
+                    : "Not Available",
+                hasDivider: false,
+              ),
+              padding(20.0),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: sw(8.0)),
+                child: LeaveDatePickerTextField(
+                  startDate: (v) => startDate(v),
+                  dateErrorText: dateErrorText,
+                ),
+              ),
+              padding(10.0),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: sw(8.0)),
+                child: LeaveTextField(
+                  onSubmitted: (v) => leaveDays(v),
+                  textInputErrorMessage: leaveDaysErrorMessage,
+                  onChange: (v) => onChangeLeaveDays(v),
+                  labelText: 'Number of Days',
+                  textInputType: TextInputType.number,
+                ),
+              ),
+              padding(25.0),
+              ButtonWidget(
+                label: "Continue",
+                icon: SvgPicture.asset(
+                  "assets/images/chevronright.svg",
+                  color: AppColors.accentColor,
+                ),
+                function: function,
+              ),
+            ],
+          )),
+    );
+  }
+}
