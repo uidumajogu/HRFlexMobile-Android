@@ -11,7 +11,7 @@ class LeaveApplicationReviewCard extends StatelessWidget {
   final Widget leaveApplicationStepperWidget;
   final String leaveDuration;
   final String contactAddress;
-  final String emailAddress;
+  final String resumptionDate;
   final String phoneNumber;
   final String comments;
   final String leaveDays;
@@ -23,7 +23,7 @@ class LeaveApplicationReviewCard extends StatelessWidget {
     @required this.leaveApplicationStepperWidget,
     @required this.leaveDuration,
     @required this.contactAddress,
-    @required this.emailAddress,
+    @required this.resumptionDate,
     @required this.phoneNumber,
     @required this.comments,
     @required this.function,
@@ -78,6 +78,7 @@ class LeaveApplicationReviewCard extends StatelessWidget {
                   padding(10.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Flexible(
                         child: Column(
@@ -99,6 +100,16 @@ class LeaveApplicationReviewCard extends StatelessWidget {
                                 fontSize: sf(14.0),
                               ),
                             ),
+                            Text(
+                              int.parse(leaveDays) < 2
+                                  ? "$leaveDays Working Day"
+                                  : "$leaveDays Working Days",
+                              style: TextStyle(
+                                color: AppColors.lightPrimaryColor,
+                                fontSize: sf(12.0),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             padding(10.0),
                           ],
                         ),
@@ -115,7 +126,7 @@ class LeaveApplicationReviewCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              "Days",
+                              "Resumption Date",
                               style: TextStyle(
                                 color: AppColors.greyColor.withOpacity(0.8),
                                 fontSize: sf(12.0),
@@ -124,7 +135,7 @@ class LeaveApplicationReviewCard extends StatelessWidget {
                             ),
                             padding(5.0),
                             Text(
-                              "$leaveDays Working Days",
+                              resumptionDate,
                               style: TextStyle(
                                 color: AppColors.darkGreyColor,
                                 fontSize: sf(14.0),
@@ -171,12 +182,6 @@ class LeaveApplicationReviewCard extends StatelessWidget {
                     ),
                     padding(5.0),
                     InfoWidget(
-                      description: "Email Address",
-                      text: emailAddress,
-                      hasDivider: true,
-                    ),
-                    padding(5.0),
-                    InfoWidget(
                       description: "Phone Number",
                       text: phoneNumber,
                       hasDivider: true,
@@ -190,7 +195,7 @@ class LeaveApplicationReviewCard extends StatelessWidget {
                     padding(20.0),
                     ButtonWidget(
                       label: "Submit Request",
-                      icon: SvgPicture.asset(
+                      suffixIcon: SvgPicture.asset(
                         "assets/images/chevronright.svg",
                         color: AppColors.accentColor,
                       ),

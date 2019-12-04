@@ -1,4 +1,7 @@
-import 'package:email_validator/email_validator.dart';
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hr_flex/Common/APIpathUtil.dart';
 import 'package:hr_flex/Common/ApiUtil.dart';
@@ -10,6 +13,7 @@ import 'package:hr_flex/Screens/LeaveApplicationScreen/LeaveApplicationReviewCar
 import 'package:hr_flex/Screens/LeaveApplicationScreen/LeaveApplicationStepperWidget.dart';
 import 'package:hr_flex/Screens/LeaveApplicationScreen/LeaveSupportInformationCard.dart';
 import 'package:hr_flex/Screens/LeaveApplicationScreen/StartLeaveApplicationCard.dart';
+import 'package:path/path.dart' as path;
 
 class LeaveApplicationScreen extends StatefulWidget {
   final Map<dynamic, dynamic> leaveTypeData;
@@ -28,32 +32,43 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
   String selectedStartDate;
   String _dateErrorText;
   String _leaveDaysErrorMessage;
-  String _contactEmail;
-  String _contactEmailErrorText;
   String _contactAddressErrorText;
   String _contactAddress;
   String _contactPhonenumberErrorText;
   String _contactPhonenumber;
   String _commentErrorText;
   String _comment;
+  String _leaveDuration;
+  String _resumptionDate;
   bool _addReliefOfficerErrorMessage;
+  String _addSupportingDocumentErrorMessage;
+  String _supportingDocumentFileName;
+  String _supportingDocumentFileBase64;
+  bool _supportingDocumentUploaded;
   Map<dynamic, dynamic> _leaveApplicationInformation;
   Map<dynamic, dynamic> _supportingDocument;
+  Map<dynamic, dynamic> _leaveDurationInformation;
   Map<dynamic, dynamic> _reliefOfficerData;
   ApiUtil _apiUtil;
   final String leaveURL = APIpathUtil.baseURL + APIpathUtil.leavePATH;
   final Map<String, dynamic> headers = APIpathUtil.getHEADERS;
+  final List<dynamic> _acceptableSupportDocumentExtensions = [
+    "pdf",
+    "jpg",
+    "jpeg",
+    "png"
+  ];
 
   @override
   void initState() {
     super.initState();
     leaveApplicationIndex = 0;
-    selectedLeaveDays = "";
+    selectedLeaveDays = widget.leaveTypeData["canSplit"]
+        ? ""
+        : widget.leaveTypeData["available"].toString();
     selectedStartDate = "";
     _dateErrorText = null;
     _leaveDaysErrorMessage = null;
-    _contactEmail = "";
-    _contactEmailErrorText = null;
     _contactAddressErrorText = null;
     _contactAddress = "";
     _contactPhonenumberErrorText = null;
@@ -61,10 +76,17 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
     _commentErrorText = null;
     _comment = "";
     _addReliefOfficerErrorMessage = false;
+    _addSupportingDocumentErrorMessage = null;
     _reliefOfficerData = LeaveData().getReliefOfficerData();
     _leaveApplicationInformation = {};
+    _leaveDurationInformation = {};
     _apiUtil = new ApiUtil();
     _supportingDocument = {};
+    _leaveDuration = "";
+    _resumptionDate = "";
+    _supportingDocumentFileName = "";
+    _supportingDocumentFileBase64 = "";
+    _supportingDocumentUploaded = false;
   }
 
   _onChangeLeaveDays(v) {
@@ -105,33 +127,6 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
     if (selectedStartDate == "") {
       setState(() {
         _dateErrorText = "Select your leave start date";
-      });
-      return false;
-    }
-
-    return true;
-  }
-
-  _contactEmailOnChange(v) {
-    _contactEmail = v;
-    setState(() {
-      _contactEmailErrorText = null;
-    });
-  }
-
-  bool _enteredContactEmail(v) {
-    _contactEmail = v;
-
-    if (_contactEmail == "") {
-      setState(() {
-        _contactEmailErrorText = "Enter your contact email address";
-      });
-      return false;
-    }
-
-    if (!EmailValidator.validate(v)) {
-      setState(() {
-        _contactEmailErrorText = "Email is invalid";
       });
       return false;
     }
@@ -210,6 +205,75 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
     return true;
   }
 
+  void _uploadSupportingDocumentFunction() async {
+    setState(() {
+      _addSupportingDocumentErrorMessage = null;
+      _supportingDocumentFileName = "";
+      _supportingDocumentFileBase64 = "";
+      _supportingDocumentUploaded = false;
+    });
+
+    try {
+      String _filePath;
+      String _fileName;
+      String _fileExtension;
+      var _fileBytes;
+      bool isCorrectFileExtension = false;
+
+      _filePath = await FilePicker.getFilePath(
+        type: FileType.ANY,
+        fileExtension: '',
+      );
+
+      if (_filePath != null) {
+        _fileName = path.basename(_filePath);
+
+        _fileExtension = path.extension(_filePath);
+
+        _acceptableSupportDocumentExtensions.forEach((ext) {
+          if (".$ext".toUpperCase() == _fileExtension.toUpperCase()) {
+            _supportingDocumentFileName = _fileName;
+            isCorrectFileExtension = true;
+          }
+        });
+
+        if (isCorrectFileExtension) {
+          _fileBytes = await File(_filePath).readAsBytes();
+          setState(() {
+            _supportingDocumentFileBase64 = base64Encode(_fileBytes);
+            _supportingDocumentUploaded = true;
+          });
+        } else {
+          setState(() {
+            _addSupportingDocumentErrorMessage =
+                "The file type is not supported, upload an image or PDF.";
+          });
+        }
+      } else {
+        setState(() {
+          _addSupportingDocumentErrorMessage =
+              "A supporting document is required. Upload supoorting document.";
+        });
+      }
+    } catch (e) {
+      print("Unsupported operation" + e.toString());
+    }
+  }
+
+  bool _includedSupportingDocument() {
+    print("documentRequired - - ${widget.leaveTypeData["documentRequired"]}");
+
+    if (_supportingDocumentFileName == "" &&
+        widget.leaveTypeData["documentRequired"]) {
+      setState(() {
+        _addSupportingDocumentErrorMessage =
+            "A supporting document is required. Upload supoorting document.";
+      });
+      return false;
+    }
+    return true;
+  }
+
   _nextLeaveApplicationStep(currentStep) {
     bool _canGoToNext = false;
     if (currentStep == 0) {
@@ -218,17 +282,27 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
     }
 
     if (currentStep == 1) {
-      _canGoToNext = _enteredContactEmail(_contactEmail) &&
-          _enteredContactPhonenumber(_contactPhonenumber) &&
+      _canGoToNext = _enteredContactPhonenumber(_contactPhonenumber) &&
           _enteredContactAddress(_contactAddress) &&
           _enteredComment(_comment) &&
-          _selectedReliefOfficer();
+          _selectedReliefOfficer() &&
+          _includedSupportingDocument();
     }
 
     if (_canGoToNext) {
-      setState(() {
-        leaveApplicationIndex = currentStep + 1;
-      });
+      if (currentStep == 0) {
+        getLeaveDuration().then((res) {
+          if (res) {
+            setState(() {
+              leaveApplicationIndex = currentStep + 1;
+            });
+          }
+        });
+      } else {
+        setState(() {
+          leaveApplicationIndex = currentStep + 1;
+        });
+      }
     }
   }
 
@@ -241,16 +315,45 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
       return Future.value(false);
     }
 
-    Navigator.of(context).pop();
     return Future.value(true);
+  }
+
+  Future<bool> getLeaveDuration() {
+    _leaveDurationInformation = {};
+
+    _leaveDurationInformation["startDate"] = selectedStartDate;
+    _leaveDurationInformation["days"] = int.parse(selectedLeaveDays);
+
+    headers["authorization"] =
+        APIpathUtil.addPath + APIpathUtil.accessToken["accessToken"];
+
+    return _apiUtil
+        .post(leaveURL + widget.leaveTypeData["id"].toString() + "/details",
+            headers: headers, body: _leaveDurationInformation)
+        .then((dynamic res) {
+      if (res["response"] == "Error") {
+        errorAlert(context, res["reason"]);
+        return false;
+      } else {
+        setState(() {
+          _leaveDuration =
+              "${DateUtil().format("MMMMd", DateTime.parse(res["details"]["startDate"]))} - ${DateUtil().format("MMMMd", DateTime.parse(res["details"]["endDate"]))}";
+
+          _resumptionDate =
+              "${DateUtil().format("MMMMd", DateTime.parse(res["details"]["resumptionDate"]))}";
+        });
+
+        return true;
+      }
+    });
   }
 
   submitLeaveApplication() {
     _leaveApplicationInformation = {};
     _supportingDocument = {};
 
-    _supportingDocument["fileName"] = "";
-    _supportingDocument["content"] = "";
+    _supportingDocument["fileName"] = _supportingDocumentFileName;
+    _supportingDocument["content"] = _supportingDocumentFileBase64;
 
     _leaveApplicationInformation["startDate"] = selectedStartDate;
     _leaveApplicationInformation["days"] = int.parse(selectedLeaveDays);
@@ -267,13 +370,13 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
         .post(leaveURL + widget.leaveTypeData["id"].toString(),
             headers: headers, body: _leaveApplicationInformation)
         .then((dynamic res) {
-      print("response - - $res");
       if (res["response"] == "Error") {
         errorAlert(context, res["reason"]);
       } else {
         successAlert(context,
             "Your ${widget.leaveTypeData["type"]} request has been submitted successfuly!");
         Navigator.of(context).pop();
+        setAsRootScreen(context, "/LeaveScreen");
       }
     });
   }
@@ -311,6 +414,8 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
                         dateErrorText: _dateErrorText,
                         leaveDaysErrorMessage: _leaveDaysErrorMessage,
                         onChangeLeaveDays: (v) => _onChangeLeaveDays(v),
+                        initialLeaveDate: selectedStartDate,
+                        intiialLeaveDays: selectedLeaveDays,
                       )
                     : leaveApplicationIndex == 1
                         ? LeaveSupportInformationCard(
@@ -320,12 +425,9 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
                               index: 1,
                               stepperLength: 3,
                             ),
-                            leaveDuration:
-                                "${DateUtil().format("MMMMd", DateTime.parse(selectedStartDate))} - ${DateUtil().format("MMMMd", DateUtil().addDays(DateTime.parse(selectedStartDate), int.parse(selectedLeaveDays)))}",
-                            submitEmail: (v) => _enteredContactEmail(v),
+                            leaveDuration: _leaveDuration,
+                            resumptionDate: _resumptionDate,
                             leaveDays: selectedLeaveDays,
-                            emailErrorMessage: _contactEmailErrorText,
-                            emailInputChange: (v) => _contactEmailOnChange(v),
                             submitContactAddress: (v) =>
                                 _enteredContactAddress(v),
                             contactAddressErrorMessage:
@@ -345,7 +447,19 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
                             reliefOfficerData: _reliefOfficerData,
                             addReliefOfficerErrorMessage:
                                 _addReliefOfficerErrorMessage,
-                            addReliefOfficerChange: _addReliefOfficerChange,
+                            selectReliefOfficerFunction:
+                                _addReliefOfficerChange,
+                            initialComment: _comment,
+                            initialContactAddress: _contactAddress,
+                            initialContactPhoneNumber: _contactPhonenumber,
+                            addSupportingDocumentErrorMessage:
+                                _addSupportingDocumentErrorMessage,
+                            uploadSupportingDocumentFunction:
+                                _uploadSupportingDocumentFunction,
+                            supportingDocumentUploaded:
+                                _supportingDocumentUploaded,
+                            supportingDocumentFileName:
+                                _supportingDocumentFileName,
                           )
                         : leaveApplicationIndex == 2
                             ? LeaveApplicationReviewCard(
@@ -355,9 +469,8 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
                                   index: 2,
                                   stepperLength: 3,
                                 ),
-                                leaveDuration:
-                                    "${DateUtil().format("MMMMd", DateTime.parse(selectedStartDate))} - ${DateUtil().format("MMMMd", DateUtil().addDays(DateTime.parse(selectedStartDate), int.parse(selectedLeaveDays)))}",
-                                emailAddress: _contactEmail,
+                                leaveDuration: _leaveDuration,
+                                resumptionDate: _resumptionDate,
                                 leaveDays: selectedLeaveDays,
                                 contactAddress: _contactAddress,
                                 phoneNumber: _contactPhonenumber,

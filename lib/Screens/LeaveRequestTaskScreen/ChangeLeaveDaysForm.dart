@@ -95,7 +95,7 @@ class _ChangeLeaveDaysFormState extends State<ChangeLeaveDaysForm> {
               padding(25.0),
               ButtonWidget(
                 label: "Continue",
-                icon: SvgPicture.asset(
+                suffixIcon: SvgPicture.asset(
                   "assets/images/chevronright.svg",
                   color: AppColors.accentColor,
                 ),

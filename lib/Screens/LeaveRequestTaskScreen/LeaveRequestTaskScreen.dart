@@ -13,11 +13,6 @@ class LeaveRequestTaskScreen extends StatefulWidget {
 
 class _LeaveRequestTaskScreenState extends State<LeaveRequestTaskScreen> {
   bool _isLoading;
-  bool _toggleTabValue;
-  Color _activeTabBorderColor;
-  Color _activeTabTitleColor;
-  Color _inactiveTabBorderColor;
-  Color _inactiveTabTitleColor;
   List<dynamic> _employeeLeaveTasks;
 
   // This instantiates the leave request screen properties
@@ -26,23 +21,12 @@ class _LeaveRequestTaskScreenState extends State<LeaveRequestTaskScreen> {
     super.initState();
 
     _isLoading = true;
-    _toggleTabValue = true;
-    _activeTabBorderColor = AppColors.lightBlueColor;
-    _inactiveTabBorderColor = AppColors.lightGreyColor;
-    _activeTabTitleColor = AppColors.primaryColor;
-    _inactiveTabTitleColor = AppColors.lightGreyColor;
 
     LeaveData().getEmployeeLeaveTasks().then((res) {
       setState(() {
         _employeeLeaveTasks = LeaveData.employeeLeaveTasks;
         _isLoading = false;
       });
-    });
-  }
-
-  void toggleTab(value) {
-    setState(() {
-      _toggleTabValue = value;
     });
   }
 
@@ -103,120 +87,24 @@ class _LeaveRequestTaskScreenState extends State<LeaveRequestTaskScreen> {
                   ),
                 )
               : Container(
-                  padding: EdgeInsets.symmetric(horizontal: sh(15)),
-                  child: Column(
-                    children: <Widget>[
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: SingleChildScrollView(
+                    child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: sh(15)),
+                      width: DeviceConfig.screenWidth,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
-                          Expanded(
-                            child: InkWell(
-                              child: Container(
-                                height: sh(60),
-                                decoration: BoxDecoration(
-                                  border: Border(
-                                    bottom: BorderSide(
-                                      color: _toggleTabValue
-                                          ? _activeTabBorderColor
-                                          : _inactiveTabBorderColor,
-                                      width: _toggleTabValue ? sh(5) : sh(1),
-                                    ),
-                                  ),
-                                ),
-                                alignment: Alignment.center,
-                                child: Text(
-                                  "SUBMITED",
-                                  style: TextStyle(
-                                    fontSize: sf(15),
-                                    color: _toggleTabValue
-                                        ? _activeTabTitleColor
-                                        : _inactiveTabTitleColor,
-                                  ),
-                                ),
-                              ),
-                              onTap: () => toggleTab(true),
-                            ),
-                          ),
-                          Expanded(
-                            child: InkWell(
-                                child: Container(
-                                  height: sh(60),
-                                  decoration: BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                        color: !_toggleTabValue
-                                            ? _activeTabBorderColor
-                                            : _inactiveTabBorderColor,
-                                        width: !_toggleTabValue ? sh(5) : sh(1),
-                                      ),
-                                    ),
-                                  ),
-                                  alignment: Alignment.center,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        "DIRECT REPORTS",
-                                        style: TextStyle(
-                                          fontSize: sf(15),
-                                          color: !_toggleTabValue
-                                              ? _activeTabTitleColor
-                                              : _inactiveTabTitleColor,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          left: sh(8.0),
-                                        ),
-                                        child: Container(
-                                          height: sh(30.0),
-                                          width: sh(30.0),
-                                          alignment: Alignment.center,
-                                          decoration: BoxDecoration(
-                                              color: !_toggleTabValue
-                                                  ? _activeTabTitleColor
-                                                  : _inactiveTabTitleColor,
-                                              shape: BoxShape.circle),
-                                          child: Padding(
-                                            padding: EdgeInsets.all(sh(8.0)),
-                                            child: Text(
-                                              "${LeaveData.employeeLeaveTasks.length}",
-                                              style: TextStyle(
-                                                  fontSize: sh(10),
-                                                  color: AppColors.whiteColor),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                onTap: () => toggleTab(false)),
-                          ),
+                          padding(sh(20)),
+                          Column(
+                            children: _employeeLeaveTasks
+                                .map<Widget>((taskData) =>
+                                    LeaveRequestTaskSummaryCard(
+                                        leaveTaskData: taskData))
+                                .toList(),
+                          )
                         ],
                       ),
-                      Container(
-                        child: SingleChildScrollView(
-                          child: Container(
-                            width: DeviceConfig.screenWidth,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: <Widget>[
-                                padding(sh(20)),
-                                if (!_toggleTabValue)
-                                  Column(
-                                    children: _employeeLeaveTasks
-                                        .map<Widget>((taskData) =>
-                                            LeaveRequestTaskSummaryCard(
-                                                leaveTaskData: taskData))
-                                        .toList(),
-                                  )
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ),
         ),

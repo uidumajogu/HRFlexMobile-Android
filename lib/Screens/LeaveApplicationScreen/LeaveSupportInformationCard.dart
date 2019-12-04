@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hr_flex/Common/ColorTheme.dart';
 import 'package:hr_flex/Common/Functions.dart';
+import 'package:hr_flex/Common/InfoWidget.dart';
 import 'package:hr_flex/Common/PeopleWidget.dart';
 import 'package:hr_flex/Screens/LeaveApplicationScreen/ButtonWidget.dart';
 import 'package:hr_flex/Screens/LeaveApplicationScreen/LeaveTextField.dart';
@@ -10,9 +11,6 @@ class LeaveSupportInformationCard extends StatelessWidget {
   final Map<dynamic, dynamic> leaveTypeData;
   final Widget leaveApplicationStepperWidget;
   final String leaveDuration;
-  final Function(String email) submitEmail;
-  final String emailErrorMessage;
-  final Function(String email) emailInputChange;
   final Function(String contactAdress) contactAddressInputChange;
   final String contactAddressErrorMessage;
   final Function(String contactAddress) submitContactAddress;
@@ -23,18 +21,23 @@ class LeaveSupportInformationCard extends StatelessWidget {
   final String contactPhonenumberErrorMessage;
   final Function(String phonenumber) submitContactPhonenumber;
   final Function function;
-  final Function addReliefOfficerChange;
+  final Function selectReliefOfficerFunction;
+  final Function uploadSupportingDocumentFunction;
   final String leaveDays;
   final Map<dynamic, dynamic> reliefOfficerData;
   final bool addReliefOfficerErrorMessage;
+  final String resumptionDate;
+  final String initialContactPhoneNumber;
+  final String initialContactAddress;
+  final String initialComment;
+  final String addSupportingDocumentErrorMessage;
+  final bool supportingDocumentUploaded;
+  final String supportingDocumentFileName;
 
   LeaveSupportInformationCard({
     @required this.leaveTypeData,
     @required this.leaveApplicationStepperWidget,
     @required this.leaveDuration,
-    @required this.submitEmail,
-    @required this.emailErrorMessage,
-    @required this.emailInputChange,
     @required this.submitContactAddress,
     @required this.contactAddressErrorMessage,
     @required this.contactAddressInputChange,
@@ -48,11 +51,20 @@ class LeaveSupportInformationCard extends StatelessWidget {
     @required this.leaveDays,
     @required this.reliefOfficerData,
     @required this.addReliefOfficerErrorMessage,
-    @required this.addReliefOfficerChange,
+    @required this.selectReliefOfficerFunction,
+    @required this.resumptionDate,
+    @required this.initialContactPhoneNumber,
+    @required this.initialContactAddress,
+    @required this.initialComment,
+    @required this.addSupportingDocumentErrorMessage,
+    @required this.uploadSupportingDocumentFunction,
+    @required this.supportingDocumentUploaded,
+    @required this.supportingDocumentFileName,
   });
 
   @override
   Widget build(BuildContext context) {
+    print("supportcard --- ${leaveTypeData["documentRequired"]}");
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
@@ -98,6 +110,7 @@ class LeaveSupportInformationCard extends StatelessWidget {
                   padding(10.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Flexible(
                         child: Column(
@@ -119,6 +132,16 @@ class LeaveSupportInformationCard extends StatelessWidget {
                                 fontSize: sf(14.0),
                               ),
                             ),
+                            Text(
+                              int.parse(leaveDays) < 2
+                                  ? "$leaveDays Working Day"
+                                  : "$leaveDays Working Days",
+                              style: TextStyle(
+                                color: AppColors.lightPrimaryColor,
+                                fontSize: sf(12.0),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                             padding(10.0),
                           ],
                         ),
@@ -135,7 +158,7 @@ class LeaveSupportInformationCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              "Days",
+                              "Resumption Date",
                               style: TextStyle(
                                 color: AppColors.greyColor.withOpacity(0.8),
                                 fontSize: sf(12.0),
@@ -144,7 +167,7 @@ class LeaveSupportInformationCard extends StatelessWidget {
                             ),
                             padding(5.0),
                             Text(
-                              "$leaveDays Working Days",
+                              resumptionDate,
                               style: TextStyle(
                                 color: AppColors.darkGreyColor,
                                 fontSize: sf(14.0),
@@ -169,11 +192,11 @@ class LeaveSupportInformationCard extends StatelessWidget {
                     reliefOfficerData.isEmpty
                         ? ButtonWidget(
                             label: "Add Relief Officer",
-                            icon: SvgPicture.asset(
+                            suffixIcon: SvgPicture.asset(
                               "assets/images/worker.svg",
                               color: AppColors.accentColor,
                             ),
-                            function: addReliefOfficerChange,
+                            function: selectReliefOfficerFunction,
                           )
                         : InkWell(
                             child: PeopleWidget(
@@ -204,16 +227,9 @@ class LeaveSupportInformationCard extends StatelessWidget {
                       ),
                     padding(20.0),
                     LeaveTextField(
-                      labelText: "Contact Email",
-                      textInputType: TextInputType.emailAddress,
-                      onSubmitted: (v) => submitEmail(v),
-                      textInputErrorMessage: emailErrorMessage,
-                      onChange: (v) => emailInputChange(v),
-                    ),
-                    padding(10.0),
-                    LeaveTextField(
                       labelText: "Contact PhoneNumber",
                       textInputType: TextInputType.number,
+                      initialValue: initialContactPhoneNumber,
                       onSubmitted: (v) => submitContactPhonenumber(v),
                       textInputErrorMessage: contactPhonenumberErrorMessage,
                       onChange: (v) => contactPhonenumberInputChange(v),
@@ -221,6 +237,7 @@ class LeaveSupportInformationCard extends StatelessWidget {
                     padding(10.0),
                     LeaveTextField(
                       labelText: "Contact Address",
+                      initialValue: initialContactAddress,
                       textInputType: TextInputType.text,
                       onSubmitted: (v) => submitContactAddress(v),
                       textInputErrorMessage: contactAddressErrorMessage,
@@ -230,16 +247,51 @@ class LeaveSupportInformationCard extends StatelessWidget {
                     padding(10.0),
                     LeaveTextField(
                       labelText: "Comment",
+                      initialValue: initialComment,
                       textInputType: TextInputType.text,
                       onSubmitted: (v) => submitComment(v),
                       textInputErrorMessage: commentErrorMessage,
                       onChange: (v) => commentInputChange(v),
                       textFieldHeight: 2,
                     ),
+                    if (leaveTypeData["documentRequired"]) padding(10.0),
+                    if (leaveTypeData["documentRequired"])
+                      supportingDocumentUploaded
+                          ? InkWell(
+                              child: InfoWidget(
+                                description: "Supporting Document",
+                                text: supportingDocumentFileName,
+                                suffixWidget: SvgPicture.asset(
+                                  "assets/images/chevronright.svg",
+                                  color: AppColors.lightGreyColor,
+                                ),
+                              ),
+                              onTap: uploadSupportingDocumentFunction,
+                            )
+                          : ButtonWidget(
+                              label: "Supporting Document",
+                              prefixIcon: SvgPicture.asset(
+                                "assets/images/uploadicon.svg",
+                                color: AppColors.brownColor,
+                              ),
+                              backgroundColor: AppColors.lightColor,
+                              labelColor: AppColors.lightPrimaryColor,
+                              borderColor: AppColors.lightGreyColor,
+                              function: uploadSupportingDocumentFunction,
+                            ),
+                    if (addSupportingDocumentErrorMessage != null)
+                      Padding(
+                        padding: EdgeInsets.all(sh(8.0)),
+                        child: Text(
+                          addSupportingDocumentErrorMessage,
+                          style: TextStyle(
+                              color: AppColors.dangerColor, fontSize: sf(14)),
+                        ),
+                      ),
                     padding(20.0),
                     ButtonWidget(
                       label: "Continue",
-                      icon: SvgPicture.asset(
+                      suffixIcon: SvgPicture.asset(
                         "assets/images/chevronright.svg",
                         color: AppColors.accentColor,
                       ),

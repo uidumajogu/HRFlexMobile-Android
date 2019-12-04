@@ -11,7 +11,7 @@ description: HR Management Application
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+5
+version: 1.0.0+6
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
@@ -48,6 +48,9 @@ dependencies:
 
   # The following package validate email inputs.
   email_validator: ^1.0.0
+
+  # The following package opens the file explorer.
+  file_picker: ^1.4.3+1
 
 dev_dependencies:
   flutter_test:

@@ -9,6 +9,8 @@ class LeaveTextField extends StatefulWidget {
   final String labelText;
   final TextInputType textInputType;
   final int textFieldHeight;
+  final String enabled;
+  final String initialValue;
 
   LeaveTextField({
     @required this.onSubmitted,
@@ -17,6 +19,8 @@ class LeaveTextField extends StatefulWidget {
     @required this.labelText,
     @required this.textInputType,
     this.textFieldHeight,
+    this.enabled,
+    this.initialValue,
   });
 
   @override
@@ -30,8 +34,10 @@ class _LeaveTextFieldState extends State<LeaveTextField> {
   @override
   void initState() {
     super.initState();
-    _textFieldFocusNode = new FocusNode();
-    _textFieldController = new TextEditingController();
+    _textFieldFocusNode = FocusNode();
+    _textFieldController = widget.initialValue != null
+        ? TextEditingController(text: widget.initialValue)
+        : TextEditingController();
   }
 
   @override
@@ -43,11 +49,15 @@ class _LeaveTextFieldState extends State<LeaveTextField> {
 
   @override
   Widget build(BuildContext context) {
+    // if (!widget.enabled) {
+    //   widget.onChange(widget.initialValue);
+    // }
     return TextField(
       maxLines: widget.textFieldHeight != null ? widget.textFieldHeight : 1,
       focusNode: _textFieldFocusNode,
       keyboardType: widget.textInputType,
       controller: _textFieldController,
+      enabled: widget.enabled == "false" ? false : true,
       decoration: InputDecoration(
         contentPadding:
             EdgeInsets.symmetric(horizontal: sh(18.0), vertical: sh(18.0)),
@@ -71,7 +81,8 @@ class _LeaveTextFieldState extends State<LeaveTextField> {
         ),
         filled: true,
         fillColor: AppColors.backgroundColor,
-        errorText: widget.textInputErrorMessage,
+        errorText:
+            widget.enabled == "false" ? null : widget.textInputErrorMessage,
         errorMaxLines: 4,
       ),
       onChanged: (v) {

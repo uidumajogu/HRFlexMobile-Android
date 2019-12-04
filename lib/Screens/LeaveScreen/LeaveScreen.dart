@@ -36,11 +36,9 @@ class _LeaveScreenState extends State<LeaveScreen> {
     LeaveData().getLeaveTypes().then((res) {
       LeaveData().getEmployeeLeaveCalendar().then((res) {
         LeaveData().getEmployeeLeaveTeamCalendar().then((res) {
-          LeaveData().getHolidays().then((res) {
-            LeaveData().getEmployeeLeaveTasks().then((res) {
-              setState(() {
-                _isLoading = false;
-              });
+          LeaveData().getEmployeeLeaveTasks().then((res) {
+            setState(() {
+              _isLoading = false;
             });
           });
         });

@@ -3,6 +3,7 @@ import 'package:hr_flex/Common/BottomBarIcon.dart';
 import 'package:hr_flex/Common/ColorTheme.dart';
 import 'package:hr_flex/Common/DeviceConfig.dart';
 import 'package:hr_flex/Common/Functions.dart';
+import 'package:hr_flex/Data/LeaveData.dart';
 
 Widget bottomNavigation(BuildContext context, String screenName) {
   return Container(
@@ -35,11 +36,36 @@ Widget bottomNavigation(BuildContext context, String screenName) {
                   isActive: screenName == "payslip",
                   onTap: () => pushScreen(context, "/PayslipScreen"),
                 ),
-                BottomBarIcon(
-                  icon: "assets/images/calendar.svg",
-                  isActive: screenName == "leave",
-                  iconText: "Leave",
-                  onTap: () => pushScreen(context, "/LeaveScreen"),
+                Stack(
+                  children: <Widget>[
+                    if (LeaveData.employeeLeaveTasks.isNotEmpty)
+                      BottomBarIcon(
+                        icon: "assets/images/calendar.svg",
+                        isActive: screenName == "leave",
+                        iconText: "Leave",
+                        onTap: () => pushScreen(context, "/LeaveScreen"),
+                      ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: sh(37.0),
+                      ),
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: sh(25.0),
+                        width: sh(25.0),
+                        decoration: BoxDecoration(
+                            color: AppColors.accentColor,
+                            shape: BoxShape.circle),
+                        child: Text(
+                          "${LeaveData.employeeLeaveTasks.length}",
+                          style: TextStyle(
+                            color: AppColors.primaryColor,
+                            fontSize: sf(12),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -5,19 +5,20 @@ import 'package:hr_flex/Common/Functions.dart';
 class ButtonWidget extends StatelessWidget {
   final Function function;
   final String label;
-  final Widget icon;
+  final Widget suffixIcon;
   final Color backgroundColor;
   final Color borderColor;
   final Color labelColor;
+  final Widget prefixIcon;
 
-  ButtonWidget({
-    @required this.function,
-    @required this.label,
-    this.icon,
-    this.backgroundColor,
-    this.borderColor,
-    this.labelColor,
-  });
+  ButtonWidget(
+      {@required this.function,
+      @required this.label,
+      this.suffixIcon,
+      this.backgroundColor,
+      this.borderColor,
+      this.labelColor,
+      this.prefixIcon});
 
   @override
   Widget build(BuildContext context) {
@@ -32,6 +33,7 @@ class ButtonWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
+          if (prefixIcon != null) prefixIcon,
           Expanded(
             child: Text(
               label,
@@ -43,7 +45,7 @@ class ButtonWidget extends StatelessWidget {
                       labelColor != null ? labelColor : AppColors.accentColor),
             ),
           ),
-          if (icon != null) icon
+          if (suffixIcon != null) suffixIcon
         ],
       ),
       onPressed: function,

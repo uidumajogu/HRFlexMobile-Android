@@ -53,6 +53,7 @@ class _ReliefOfficersScreenState extends State<ReliefOfficersScreen> {
   void initState() {
     super.initState();
     _isLoading = true;
+    _reliefOfficers = [];
     _timer = Timer(Duration(milliseconds: 1), () {});
     _searchMessage = "Search with name of your relief officer";
     LeaveData().getReliefOfficers("").then((res) {

@@ -16,6 +16,8 @@ class StartLeaveApplicationCard extends StatelessWidget {
   final String dateErrorText;
   final String leaveDaysErrorMessage;
   final Function(String change) onChangeLeaveDays;
+  final String initialLeaveDate;
+  final String intiialLeaveDays;
 
   StartLeaveApplicationCard({
     @required this.leaveTypeData,
@@ -26,6 +28,8 @@ class StartLeaveApplicationCard extends StatelessWidget {
     @required this.dateErrorText,
     @required this.leaveDaysErrorMessage,
     @required this.onChangeLeaveDays,
+    @required this.initialLeaveDate,
+    @required this.intiialLeaveDays,
   });
 
   @override
@@ -104,6 +108,7 @@ class StartLeaveApplicationCard extends StatelessWidget {
                 child: LeaveDatePickerTextField(
                   startDate: (v) => startDate(v),
                   dateErrorText: dateErrorText,
+                  initialValue: initialLeaveDate,
                 ),
               ),
               padding(10.0),
@@ -115,12 +120,16 @@ class StartLeaveApplicationCard extends StatelessWidget {
                   onChange: (v) => onChangeLeaveDays(v),
                   labelText: 'Number of Days',
                   textInputType: TextInputType.number,
+                  enabled: leaveTypeData["canSplit"] ? "true" : "false",
+                  initialValue: leaveTypeData["canSplit"]
+                      ? intiialLeaveDays
+                      : leaveTypeData["available"].toString(),
                 ),
               ),
               padding(25.0),
               ButtonWidget(
                 label: "Continue",
-                icon: SvgPicture.asset(
+                suffixIcon: SvgPicture.asset(
                   "assets/images/chevronright.svg",
                   color: AppColors.accentColor,
                 ),

@@ -73,8 +73,8 @@ class _LoginScreenState extends State<LoginScreen> {
   //function to login user
   void _loginUser(String username, String password) {
     _apiUtil.post(_loginURL, headers: APIpathUtil.loginHEADERS, body: {
-      "username": "OT1702199",
-      "password": "Quetz@l2019",
+      "username": username,
+      "password": password,
     }).then((dynamic res) {
       if (res["response"] == "Error") {
         errorAlert(context, res["reason"]);

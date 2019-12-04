@@ -121,7 +121,11 @@ class _TeamLeaveCalendarScreenState extends State<TeamLeaveCalendarScreen> {
                                           ),
                                         ),
                                         chipColor: teamMember["status"] != null
-                                            ? AppColors.orangeColor
+                                            ? teamMember["status"]
+                                                        .toUpperCase() ==
+                                                    "SCHEDULED"
+                                                ? AppColors.orangeColor
+                                                : AppColors.greenColor
                                             : null,
                                         chipLabel: teamMember["status"] != null
                                             ? teamMember["status"].toUpperCase()

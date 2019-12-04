@@ -37,53 +37,32 @@ class VacationActivityCard extends StatelessWidget {
                 // mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Text(
-                            "Vacation Activity",
-                            style: TextStyle(
-                              fontSize: sf(20.0),
-                              color: AppColors.primaryColor,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: sw(8.0)),
-                            child: Container(
-                              height: sh(35.0),
-                              width: sh(35.0),
-                              decoration: BoxDecoration(
-                                  color: AppColors.accentColor.withOpacity(0.2),
-                                  shape: BoxShape.circle),
-                              child: Padding(
-                                padding: EdgeInsets.all(sh(8.0)),
-                                child: SvgPicture.asset(
-                                  "assets/images/calendar.svg",
-                                  color: AppColors.accentColor,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      if (_employeeLeaveCalendarData["type"] != null)
-                        InkWell(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                              left: sh(50.0),
-                              bottom: sh(20.0),
-                              top: sh(20.0),
-                              right: sh(20.0),
-                            ),
-                            child: SvgPicture.asset(
-                              "assets/images/chevronright.svg",
-                              color: AppColors.primaryColor,
-                            ),
-                          ),
-                          onTap: () => print("leave activity tap"),
+                      Text(
+                        "Vacation Activity",
+                        style: TextStyle(
+                          fontSize: sf(20.0),
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.bold,
                         ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(left: sw(8.0)),
+                        child: Container(
+                          height: sh(35.0),
+                          width: sh(35.0),
+                          decoration: BoxDecoration(
+                              color: AppColors.accentColor.withOpacity(0.2),
+                              shape: BoxShape.circle),
+                          child: Padding(
+                            padding: EdgeInsets.all(sh(8.0)),
+                            child: SvgPicture.asset(
+                              "assets/images/calendar.svg",
+                              color: AppColors.accentColor,
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                   InfoWidget(
@@ -99,7 +78,10 @@ class VacationActivityCard extends StatelessWidget {
                         ? "${DateUtil().format("MMMM dd", DateTime.parse(_employeeLeaveCalendarData["startDate"]))}  -  ${DateUtil().format("MMMM dd", DateTime.parse(_employeeLeaveCalendarData["resumptionDate"]))}"
                         : "Nothing Scheduled",
                     chipColor: _employeeLeaveCalendarData["status"] != null
-                        ? AppColors.orangeColor
+                        ? _employeeLeaveCalendarData["status"].toUpperCase() ==
+                                "SCHEDULED"
+                            ? AppColors.orangeColor
+                            : AppColors.greenColor
                         : null,
                     chipLabel: _employeeLeaveCalendarData["status"] != null
                         ? _employeeLeaveCalendarData["status"].toUpperCase()

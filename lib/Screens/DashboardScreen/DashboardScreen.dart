@@ -6,6 +6,7 @@ import 'package:hr_flex/Common/ColorTheme.dart';
 import 'package:hr_flex/Common/Functions.dart';
 
 import 'package:hr_flex/Data/EmployeeData.dart';
+import 'package:hr_flex/Data/LeaveData.dart';
 
 import 'package:hr_flex/Screens/BirthDayScreen/BirthdayScreen.dart';
 import 'package:hr_flex/Screens/DashboardScreen/DashboardHeader.dart';
@@ -42,8 +43,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       EmployeeData().getEmployeeProfile().then((res) {
         EmployeeData().getEmployeeBirthdaysToday().then((res) {
           EmployeeData().getNewHires().then((res) {
-            setState(() {
-              _isLoading = false;
+            LeaveData().getEmployeeLeaveTasks().then((res) {
+              setState(() {
+                _isLoading = false;
+              });
             });
           });
         });

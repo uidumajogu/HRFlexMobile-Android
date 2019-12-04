@@ -112,7 +112,7 @@ class _LeaveRequestTaskDetailsCardScreenState
           successAlert(context,
               "${widget.leaveTaskData["type"]} Leave for ${widget.leaveTaskData["employee"]["name"]} has been updated successfuly!");
           Navigator.of(context).pop();
-          pushScreen(context, "/LeaveRequestTaskScreen");
+          setAsRootScreen(context, "/LeaveRequestTaskScreen");
         }
       });
     }

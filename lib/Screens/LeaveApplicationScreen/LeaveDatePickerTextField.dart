@@ -8,10 +8,12 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 class LeaveDatePickerTextField extends StatefulWidget {
   final Function(String selectedStartDate) startDate;
   final String dateErrorText;
+  final String initialValue;
 
   LeaveDatePickerTextField({
     @required this.startDate,
     @required this.dateErrorText,
+    this.initialValue,
   });
 
   @override
@@ -61,7 +63,7 @@ class _LeaveDatePickerTextFieldState extends State<LeaveDatePickerTextField> {
     return Container(
       decoration: BoxDecoration(borderRadius: BorderRadius.circular(sh(10.0))),
       child: DateTimeField(
-        controller: dateTextController,
+        controller: dateTextController..text = widget.initialValue,
         focusNode: dateFocusNode,
         readOnly: true,
         format: dateFormat,
@@ -110,7 +112,7 @@ class _LeaveDatePickerTextFieldState extends State<LeaveDatePickerTextField> {
           return showDatePicker(
             context: context,
             firstDate: DateTime.now().add(Duration(days: 1)),
-            initialDate: currentValue ?? DateTime.now().add(Duration(days: 1)),
+            initialDate: DateTime.now().add(Duration(days: 1)),
             lastDate: DateTime(DateTime.now().year + 1),
           );
         },
