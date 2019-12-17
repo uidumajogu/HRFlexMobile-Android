@@ -62,7 +62,7 @@ class BirthdayCard extends StatelessWidget {
             ),
             _birthdaysTodayData.isEmpty
                 ? PeopleWidget(
-                    description: "No bithdays today!",
+                    description: "No birthdays today!",
                   )
                 : Column(
                     children: _birthdaysTodayData

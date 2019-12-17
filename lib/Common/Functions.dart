@@ -314,9 +314,9 @@ Widget simplePopup(List<String> text, int count, BuildContext context,
 }
 
 logout(BuildContext context) {
+  setAsRootScreen(context, "/LoginScreen");
   EmployeeData().resetEmployeeProfile();
   PayrollData().resetPayrollPeriod();
-  setAsRootScreen(context, "/LoginScreen");
 }
 
 //This returns a scaled font size

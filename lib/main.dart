@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // debugShowCheckedModeBanner: false,
-      title: 'hr_flex Mobile',
+      debugShowCheckedModeBanner: false,
+      title: 'HRFlex',
       theme: ThemeData(
         // Sets the color theme of the application.
         primarySwatch: AppColors.primarySwatchColor,

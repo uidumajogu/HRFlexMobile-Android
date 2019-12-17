@@ -17,7 +17,7 @@ class VacationActivityCard extends StatelessWidget {
     this.onTap,
     this.viewTeamCalendar,
   });
-  final Map<String, dynamic> _employeeLeaveCalendarData =
+  final Map<dynamic, dynamic> _employeeLeaveCalendarData =
       LeaveData.employeeLeaveCalendar;
 
   final Map<String, dynamic> _employeeReliefOfficerData =
@@ -31,97 +31,129 @@ class VacationActivityCard extends StatelessWidget {
       ),
       child: Padding(
         padding: EdgeInsets.all(sw(20.0)),
-        child: _employeeLeaveCalendarData.isNotEmpty
-            ? Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Text(
-                        "Vacation Activity",
-                        style: TextStyle(
-                          fontSize: sf(20.0),
-                          color: AppColors.primaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
+        child:
+            // _employeeLeaveCalendarData.isNotEmpty
+            //     ?
+            Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          // mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Text(
+                  "Vacation Activity",
+                  style: TextStyle(
+                    fontSize: sf(20.0),
+                    color: AppColors.primaryColor,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: sw(8.0)),
+                  child: Container(
+                    height: sh(35.0),
+                    width: sh(35.0),
+                    decoration: BoxDecoration(
+                        color: AppColors.accentColor.withOpacity(0.2),
+                        shape: BoxShape.circle),
+                    child: Padding(
+                      padding: EdgeInsets.all(sh(8.0)),
+                      child: SvgPicture.asset(
+                        "assets/images/calendar.svg",
+                        color: AppColors.accentColor,
                       ),
-                      Padding(
-                        padding: EdgeInsets.only(left: sw(8.0)),
-                        child: Container(
-                          height: sh(35.0),
-                          width: sh(35.0),
-                          decoration: BoxDecoration(
-                              color: AppColors.accentColor.withOpacity(0.2),
-                              shape: BoxShape.circle),
-                          child: Padding(
-                            padding: EdgeInsets.all(sh(8.0)),
-                            child: SvgPicture.asset(
-                              "assets/images/calendar.svg",
-                              color: AppColors.accentColor,
-                            ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            InfoWidget(
+              description: "Leave Type",
+              text: _employeeLeaveCalendarData["type"] != null
+                  ? _employeeLeaveCalendarData["type"]
+                  : "Nothing Scheduled",
+              hasDivider: true,
+            ),
+            InfoWidget(
+              description: "Duration",
+              text: _employeeLeaveCalendarData.isEmpty
+                  ? "Nothing Scheduled"
+                  : _employeeLeaveCalendarData["startDate"] != null
+                      ? "${DateUtil().format("MMMM dd", DateTime.parse(_employeeLeaveCalendarData["startDate"]))}  -  ${DateUtil().format("MMMM dd", DateTime.parse(_employeeLeaveCalendarData["resumptionDate"]))}"
+                      : "Nothing Scheduled",
+              chipColor: _employeeLeaveCalendarData.isEmpty
+                  ? null
+                  : _employeeLeaveCalendarData["status"] != null
+                      ? _employeeLeaveCalendarData["status"].toUpperCase() ==
+                              "SCHEDULED"
+                          ? AppColors.orangeColor
+                          : AppColors.greenColor
+                      : null,
+              chipLabel: _employeeLeaveCalendarData.isEmpty
+                  ? null
+                  : _employeeLeaveCalendarData["status"] != null
+                      ? _employeeLeaveCalendarData["status"].toUpperCase()
+                      : null,
+              hasDivider: true,
+            ),
+            InfoWidget(
+              description: "Relief Officer",
+              text: _employeeLeaveCalendarData.isEmpty
+                  ? "No Leave Scheduled"
+                  : _employeeReliefOfficerData["name"] != null
+                      ? _employeeReliefOfficerData["name"]
+                      : "No Leave Scheduled",
+              image: _employeeLeaveCalendarData.isEmpty
+                  ? null
+                  : _employeeReliefOfficerData["image"] != null
+                      ? InkWell(
+                          child: imageBytes(
+                            _employeeReliefOfficerData["image"],
+                            sw(60.0),
+                            sw(60.0),
+                            false,
+                          ),
+                          onTap: () => onTap(
+                            employeeDetails(
+                                _employeeReliefOfficerData, context),
+                          ),
+                        )
+                      : null,
+              hasDivider: true,
+            ),
+            if (viewTeamCalendar != null)
+              LeaveData.employeeLeaveTeamCalendar.isEmpty
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Team Calender",
+                          style: TextStyle(
+                            color: AppColors.greyColor.withOpacity(0.8),
+                            fontSize: sf(12.0),
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  InfoWidget(
-                    description: "Leave Type",
-                    text: _employeeLeaveCalendarData["type"] != null
-                        ? _employeeLeaveCalendarData["type"]
-                        : "Not Available",
-                    hasDivider: true,
-                  ),
-                  InfoWidget(
-                    description: "Duration",
-                    text: _employeeLeaveCalendarData["startDate"] != null
-                        ? "${DateUtil().format("MMMM dd", DateTime.parse(_employeeLeaveCalendarData["startDate"]))}  -  ${DateUtil().format("MMMM dd", DateTime.parse(_employeeLeaveCalendarData["resumptionDate"]))}"
-                        : "Nothing Scheduled",
-                    chipColor: _employeeLeaveCalendarData["status"] != null
-                        ? _employeeLeaveCalendarData["status"].toUpperCase() ==
-                                "SCHEDULED"
-                            ? AppColors.orangeColor
-                            : AppColors.greenColor
-                        : null,
-                    chipLabel: _employeeLeaveCalendarData["status"] != null
-                        ? _employeeLeaveCalendarData["status"].toUpperCase()
-                        : null,
-                    hasDivider: true,
-                  ),
-                  InfoWidget(
-                    description: "Relief Officer",
-                    text: _employeeReliefOfficerData["name"] != null
-                        ? _employeeReliefOfficerData["name"]
-                        : "Not Available",
-                    image: _employeeReliefOfficerData["image"] != null
-                        ? InkWell(
-                            child: imageBytes(
-                              _employeeReliefOfficerData["image"],
-                              sw(60.0),
-                              sw(60.0),
-                              false,
-                            ),
-                            onTap: () => onTap(
-                              employeeDetails(
-                                  _employeeReliefOfficerData, context),
-                            ),
-                          )
-                        : Padding(
-                            padding: EdgeInsets.all(0.0),
+                        padding(5.0),
+                        Text(
+                          "No Team Calender",
+                          style: TextStyle(
+                            color: AppColors.darkGreyColor,
+                            fontSize: sf(14.0),
                           ),
-                    hasDivider: true,
-                  ),
-                  if (viewTeamCalendar != null)
-                    PeopleSummaryWidget(
+                        ),
+                      ],
+                    )
+                  : PeopleSummaryWidget(
                       title: "Team Calendar",
                       people: LeaveData.employeeLeaveTeamCalendar,
                       summaryType: "image",
                       hasDivider: false,
                       function: viewTeamCalendar,
                     ),
-                ],
-              )
-            : NoData(msg: "No current leave activity"),
+          ],
+        ),
+        // : NoData(msg: "No current leave activity"),
       ),
     );
   }

@@ -9,6 +9,7 @@ import 'package:hr_flex/Data/ClientData.dart';
 import 'package:hr_flex/Common/ColorTheme.dart';
 import 'package:hr_flex/Common/DeviceConfig.dart';
 import 'package:hr_flex/Common/ApiUtil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -18,8 +19,11 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController _usernameTextController;
   TextEditingController _passwordTextController;
+
   FocusNode _usernameFocusNode;
   FocusNode _passwordFocusNode;
+  String _username;
+  String _password;
   String _usernameErrorMessage;
   String _passwordErrorMessage;
   bool _loginIn;
@@ -33,6 +37,8 @@ class _LoginScreenState extends State<LoginScreen> {
   void initState() {
     super.initState();
     _rememberMe = false;
+    _username = "";
+    _password = "";
     _usernameTextController = new TextEditingController();
     _passwordTextController = new TextEditingController();
     _usernameFocusNode = new FocusNode();
@@ -42,6 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
     _loginIn = false;
     _loginSuccess = false;
     _apiUtil = new ApiUtil();
+    _getStoredPreferences();
   }
 
   // This disposes the widget and all properties when the user navigates from this screen
@@ -50,6 +57,19 @@ class _LoginScreenState extends State<LoginScreen> {
     _usernameTextController.dispose();
     _passwordTextController.dispose();
     super.dispose();
+  }
+
+  _getStoredPreferences() async {
+    final SharedPreferences loginPreferences =
+        await SharedPreferences.getInstance();
+    String _prefUsername = loginPreferences.getString('username');
+    if (_prefUsername != null) {
+      setState(() {
+        _username = _prefUsername;
+        _usernameTextController.text = _prefUsername;
+        _rememberMe = true;
+      });
+    }
   }
 
   //This navigates user to the dashboard screen
@@ -71,7 +91,15 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   //function to login user
-  void _loginUser(String username, String password) {
+  void _loginUser(String username, String password) async {
+    final SharedPreferences loginPreferences =
+        await SharedPreferences.getInstance();
+    if (_rememberMe) {
+      loginPreferences.setString('username', username);
+    } else {
+      loginPreferences.setString('username', null);
+    }
+
     _apiUtil.post(_loginURL, headers: APIpathUtil.loginHEADERS, body: {
       "username": username,
       "password": password,
@@ -100,8 +128,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   //function to check login inputs
   _checkInputs() {
-    String _username = _usernameTextController.text;
-    String _password = _passwordTextController.text;
+    _username = _usernameTextController.text;
+    _password = _passwordTextController.text;
     if (_username == "") {
       _usernameErrorMessage = "A username is required";
       _loginIn = false;
@@ -331,40 +359,29 @@ class _LoginScreenState extends State<LoginScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
                                     children: <Widget>[
-                                      Container(
-                                        padding: EdgeInsets.all(sh(1)),
-                                        decoration: BoxDecoration(
-                                            color: AppColors.whiteColor,
-                                            borderRadius:
-                                                BorderRadius.circular(sh(3))),
-                                        child: Theme(
-                                          data: Theme.of(context).copyWith(
-                                            unselectedWidgetColor: Colors.white,
-                                          ),
-                                          child: SizedBox(
-                                            width: sh(20),
-                                            height: sh(20),
-                                            child: Checkbox(
-                                              value: _rememberMe,
-                                              checkColor: _rememberMe
-                                                  ? AppColors.greenColor
-                                                  : AppColors.whiteColor,
-                                              activeColor: _rememberMe
-                                                  ? AppColors.greenColor
-                                                  : AppColors.whiteColor,
-                                              onChanged: (v) {
-                                                setState(() {
-                                                  _rememberMe = !_rememberMe;
-                                                });
-                                                print(v);
-                                              },
-                                            ),
-                                          ),
+                                      Theme(
+                                        data: Theme.of(context).copyWith(
+                                          unselectedWidgetColor: Colors.white,
+                                        ),
+                                        child: Switch(
+                                          value: _rememberMe,
+                                          // checkColor: _rememberMe
+                                          //     ? AppColors.greenColor
+                                          //     : AppColors.whiteColor,
+                                          // activeColor: _rememberMe
+                                          //     ? AppColors.darkGreenColor
+                                          //     : AppColors.whiteColor,
+                                          onChanged: (v) {
+                                            setState(() {
+                                              _rememberMe = !_rememberMe;
+                                            });
+                                            print(v);
+                                          },
                                         ),
                                       ),
                                       Padding(
                                         padding:
-                                            EdgeInsets.only(right: sw(10.0)),
+                                            EdgeInsets.only(right: sw(0.0)),
                                       ),
                                       Text(
                                         'Remember me',

@@ -117,7 +117,11 @@ class _LeaveScreenState extends State<LeaveScreen> {
                       ),
                     ],
                   ),
-                  onTap: () => pushScreen(context, "/LeaveRequestTaskScreen"),
+                  onTap: () {
+                    if (LeaveData.employeeLeaveTasks.isNotEmpty) {
+                      pushScreen(context, "/LeaveRequestTaskScreen");
+                    }
+                  },
                 )
             ],
           ),

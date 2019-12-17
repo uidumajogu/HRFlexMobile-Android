@@ -28,43 +28,43 @@ Widget bottomNavigation(BuildContext context, String screenName) {
                   icon: "assets/images/dashboard.svg",
                   iconText: "Home",
                   isActive: screenName == "dashboard",
-                  onTap: () => pushScreen(context, "/DashboardScreen"),
+                  onTap: () => setAsRootScreen(context, "/DashboardScreen"),
                 ),
                 BottomBarIcon(
                   icon: "assets/images/payslip.svg",
                   iconText: "Payslips",
                   isActive: screenName == "payslip",
-                  onTap: () => pushScreen(context, "/PayslipScreen"),
+                  onTap: () => setAsRootScreen(context, "/PayslipScreen"),
                 ),
                 Stack(
                   children: <Widget>[
+                    BottomBarIcon(
+                      icon: "assets/images/calendar.svg",
+                      isActive: screenName == "leave",
+                      iconText: "Leave",
+                      onTap: () => setAsRootScreen(context, "/LeaveScreen"),
+                    ),
                     if (LeaveData.employeeLeaveTasks.isNotEmpty)
-                      BottomBarIcon(
-                        icon: "assets/images/calendar.svg",
-                        isActive: screenName == "leave",
-                        iconText: "Leave",
-                        onTap: () => pushScreen(context, "/LeaveScreen"),
-                      ),
-                    Padding(
-                      padding: EdgeInsets.only(
-                        left: sh(37.0),
-                      ),
-                      child: Container(
-                        alignment: Alignment.center,
-                        height: sh(25.0),
-                        width: sh(25.0),
-                        decoration: BoxDecoration(
-                            color: AppColors.accentColor,
-                            shape: BoxShape.circle),
-                        child: Text(
-                          "${LeaveData.employeeLeaveTasks.length}",
-                          style: TextStyle(
-                            color: AppColors.primaryColor,
-                            fontSize: sf(12),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: sh(37.0),
+                        ),
+                        child: Container(
+                          alignment: Alignment.center,
+                          height: sh(25.0),
+                          width: sh(25.0),
+                          decoration: BoxDecoration(
+                              color: AppColors.accentColor,
+                              shape: BoxShape.circle),
+                          child: Text(
+                            "${LeaveData.employeeLeaveTasks.length}",
+                            style: TextStyle(
+                              color: AppColors.primaryColor,
+                              fontSize: sf(12),
+                            ),
                           ),
                         ),
                       ),
-                    ),
                   ],
                 ),
               ],

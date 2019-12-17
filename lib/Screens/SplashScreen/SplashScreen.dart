@@ -78,16 +78,17 @@ class _SplashScreenState extends State<SplashScreen>
                 Column(
                   children: <Widget>[
                     padding(DeviceConfig.screenHeight * 0.25),
-                    AnimatedBuilder(
-                      animation: _animationController,
-                      child: Container(child: logo(50.0)),
-                      builder: (BuildContext context, Widget _widget) {
-                        return Transform.rotate(
-                          angle: _animationController.value * 14,
-                          child: _widget,
-                        );
-                      },
-                    ),
+                    // AnimatedBuilder(
+                    //   animation: _animationController,
+                    //   child: Container(child: logo(50.0)),
+                    //   builder: (BuildContext context, Widget _widget) {
+                    //     return Transform.rotate(
+                    //       angle: _animationController.value * 14,
+                    //       child: _widget,
+                    //     );
+                    //   },
+                    // ),
+                    Container(child: logo(50.0)),
                     padding(18.0),
                     logoText(25.0)
                   ],
