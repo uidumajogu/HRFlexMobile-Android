@@ -16,6 +16,7 @@ class PeopleSummaryWidget extends StatelessWidget {
     this.hasDivider,
     this.function,
   });
+
   @override
   Widget build(BuildContext context) {
     bool _hasDivider = false;
@@ -24,6 +25,7 @@ class PeopleSummaryWidget extends StatelessWidget {
     }
 
     List<dynamic> _people = [];
+
     if (people.length > 3) {
       _people = _people.take(3);
     } else {
@@ -34,7 +36,7 @@ class PeopleSummaryWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          padding(10.0),
+          if (title != null) padding(10.0),
           if (title != null)
             Text(
               title,
@@ -55,10 +57,10 @@ class PeopleSummaryWidget extends StatelessWidget {
                       (person) => person == _people[_people.length - 1]
                           ? Padding(
                               padding: EdgeInsets.only(
-                                  left: (_people.length - 1) * sh(35.0)),
+                                  left: (_people.length - 1) * sh(25.0)),
                               child: Container(
-                                width: sh(50.0),
-                                height: sh(50.0),
+                                width: sh(40.0),
+                                height: sh(40.0),
                                 alignment: Alignment.center,
                                 decoration: BoxDecoration(
                                   color: AppColors.lightGreenColor,
@@ -81,11 +83,11 @@ class PeopleSummaryWidget extends StatelessWidget {
                               ))
                           : Padding(
                               padding: EdgeInsets.only(
-                                  left: (_people.indexOf(person)) * sh(35.0)),
+                                  left: (_people.indexOf(person)) * sh(25.0)),
                               child: imageBytes(
-                                person["employee"]["image"],
-                                sh(40.0),
-                                sh(40.0),
+                                person["image"],
+                                sh(30.0),
+                                sh(30.0),
                                 false,
                               ),
                             ),
@@ -95,15 +97,19 @@ class PeopleSummaryWidget extends StatelessWidget {
               InkWell(
                 child: Container(
                   decoration: BoxDecoration(
-                      color: AppColors.darkGreenColor,
+                      color: AppColors.primaryColor,
                       borderRadius:
                           BorderRadius.all(Radius.circular(sh(15.0)))),
                   child: Padding(
                     padding: EdgeInsets.symmetric(
-                        vertical: sh(8.0), horizontal: sh(25.0)),
+                        vertical: sh(10.0), horizontal: sh(35.0)),
                     child: Text(
                       "View",
-                      style: TextStyle(color: AppColors.whiteColor),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: sf(12.0),
+                        color: AppColors.accentColor,
+                      ),
                     ),
                   ),
                 ),

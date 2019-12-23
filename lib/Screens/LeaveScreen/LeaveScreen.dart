@@ -17,6 +17,7 @@ class LeaveScreen extends StatefulWidget {
 
 class _LeaveScreenState extends State<LeaveScreen> {
   bool _isLoading;
+  List<dynamic> _calendarEmployeeData;
 
   goToLeaveApplication(x) {
     pushScreenWithData(
@@ -32,11 +33,19 @@ class _LeaveScreenState extends State<LeaveScreen> {
   void initState() {
     super.initState();
     _isLoading = true;
+    _calendarEmployeeData = [];
 
     LeaveData().getLeaveTypes().then((res) {
       LeaveData().getEmployeeLeaveCalendar().then((res) {
         LeaveData().getEmployeeLeaveTeamCalendar().then((res) {
           LeaveData().getEmployeeLeaveTasks().then((res) {
+            LeaveData.employeeLeaveTeamCalendar.forEach((employee) => {
+                  _calendarEmployeeData = [
+                    ..._calendarEmployeeData,
+                    employee["employee"]
+                  ]
+                });
+
             setState(() {
               _isLoading = false;
             });

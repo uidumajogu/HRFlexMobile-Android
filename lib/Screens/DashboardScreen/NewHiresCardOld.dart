@@ -3,7 +3,6 @@ import 'package:hr_flex/Common/ColorTheme.dart';
 import 'package:hr_flex/Common/DateUtil.dart';
 import 'package:hr_flex/Common/EmployeeDetails.dart';
 import 'package:hr_flex/Common/Functions.dart';
-import 'package:hr_flex/Common/PeopleSummaryWidget.dart';
 import 'package:hr_flex/Common/PeopleWidget.dart';
 import 'package:hr_flex/Data/EmployeeData.dart';
 
@@ -58,23 +57,38 @@ class NewHiresCard extends StatelessWidget {
                     ),
                   ],
                 ),
+                if (_newHiresListLength > 3)
+                  IconButton(
+                    icon: Icon(Icons.chevron_right),
+                    onPressed: () => goToNewHires(_newHires),
+                  ),
               ],
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: sh(5.0)),
-              child: Divider(
-                color: AppColors.greyColor.withOpacity(0.5),
-              ),
             ),
             _newHires.isEmpty
                 ? PeopleWidget(
                     description: "No new hires this week!",
                   )
-                : PeopleSummaryWidget(
-                    people: _newHires,
-                    summaryType: "image",
-                    hasDivider: false,
-                    function: () => goToNewHires(_newHires),
+                : Column(
+                    children: _newHires
+                        .take(3)
+                        .map<Widget>((nh) => PeopleWidget(
+                              name: nh["name"],
+                              description: nh["designation"],
+                              image: InkWell(
+                                  child: imageBytes(
+                                    nh["image"],
+                                    sh(60.0),
+                                    sh(60.0),
+                                    false,
+                                  ),
+                                  onTap: () =>
+                                      onTap(employeeDetails(nh, context))),
+                              hasDivider:
+                                  nh == _newHires[_newHires.take(3).length - 1]
+                                      ? false
+                                      : true,
+                            ))
+                        .toList(),
                   ),
           ],
         ),

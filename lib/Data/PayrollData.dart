@@ -167,7 +167,7 @@ class PayrollData {
   }
 
   resetPayrollPeriod() {
-    payrollPeriod = null;
+    payrollPeriod = [];
     hasPayrollData = false;
   }
 }

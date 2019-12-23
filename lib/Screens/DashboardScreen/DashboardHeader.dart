@@ -30,8 +30,8 @@ class DashboardHeader extends StatelessWidget {
                   children: <Widget>[
                     imageBytes(
                       EmployeeData.employeeProfile["image"],
-                      sh(80.0),
-                      sh(80.0),
+                      sh(60.0),
+                      sh(60.0),
                       true,
                     ),
                     padding(10.0),
@@ -65,24 +65,27 @@ class DashboardHeader extends StatelessWidget {
                   ],
                 )
               : Padding(
-                  padding: EdgeInsets.all(10.0),
+                  padding: EdgeInsets.all(5.0),
                 ),
           Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: <Widget>[
-              simplePopup(
-                ["Logout"],
-                1,
-                context,
-                (v) => logout(v),
+              Padding(
+                padding: EdgeInsets.only(top: sh(30.0)),
+                child: simplePopup(
+                  ["Logout"],
+                  1,
+                  context,
+                  (v) => logout(v),
+                ),
               ),
               ClientData.clientDetails.isNotEmpty
                   ? InkWell(
                       child: imageBytes(
                         ClientData.clientDetails["logo"],
-                        sh(40.0),
-                        sh(40.0),
+                        sh(32.0),
+                        sh(32.0),
                         false,
                       ),
                       onTap: () => onTap(organizationDetails(

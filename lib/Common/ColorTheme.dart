@@ -26,6 +26,9 @@ class AppColors {
   //Accent color
   static const Color accentColor = Color(0xFFFECC9C);
 
+  //Accent color 2
+  static const Color accentColor2 = Color(0xFFFFCB9B);
+
   //Canvas color
   static const Color canvasColor = Color(0xFFF7F7F7);
 
@@ -40,6 +43,9 @@ class AppColors {
 
   //grey color
   static const Color greyColor = Color(0xFF71685B);
+
+  //grey color 2
+  static const Color greyColor2 = Color(0xFF979797);
 
   //dark grey color
   static const Color darkGreyColor = Color(0xFF4A4A4A);

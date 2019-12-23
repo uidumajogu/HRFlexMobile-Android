@@ -3,7 +3,6 @@ import 'package:hr_flex/Common/ColorTheme.dart';
 import 'package:hr_flex/Common/DateUtil.dart';
 import 'package:hr_flex/Common/EmployeeDetails.dart';
 import 'package:hr_flex/Common/Functions.dart';
-import 'package:hr_flex/Common/PeopleSummaryWidget.dart';
 import 'package:hr_flex/Common/PeopleWidget.dart';
 import 'package:hr_flex/Data/EmployeeData.dart';
 
@@ -53,50 +52,43 @@ class BirthdayCard extends StatelessWidget {
                     ),
                   ],
                 ),
+                if (_birthdaysTodayData.isNotEmpty &&
+                    _birthdaysTodayListLength > 3)
+                  IconButton(
+                    icon: Icon(Icons.chevron_right),
+                    onPressed: () => goToBirthdays(_birthdaysTodayData),
+                  ),
               ],
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: sh(5.0)),
-              child: Divider(
-                color: AppColors.greyColor.withOpacity(0.5),
-              ),
             ),
             _birthdaysTodayData.isEmpty
                 ? PeopleWidget(
                     description: "No birthdays today!",
                   )
-                : PeopleSummaryWidget(
-                    people: _birthdaysTodayData,
-                    summaryType: "image",
-                    hasDivider: false,
-                    function: () => goToBirthdays(_birthdaysTodayData),
-                  ),
-
-            // Column(
-            //     children: _birthdaysTodayData
-            //         .take(3)
-            //         .map<Widget>((bdt) => PeopleWidget(
-            //               name: bdt["name"],
-            //               description: bdt["designation"],
-            //               image: InkWell(
-            //                 child: imageBytes(
-            //                   bdt["image"],
-            //                   sw(60.0),
-            //                   sw(60.0),
-            //                   false,
-            //                 ),
-            //                 onTap: () =>
-            //                     onTap(employeeDetails(bdt, context)),
-            //               ),
-            //               hasDivider: bdt ==
-            //                       _birthdaysTodayData[
-            //                           _birthdaysTodayData.take(3).length -
-            //                               1]
-            //                   ? false
-            //                   : true,
-            //             ))
-            //         .toList(),
-            //   )
+                : Column(
+                    children: _birthdaysTodayData
+                        .take(3)
+                        .map<Widget>((bdt) => PeopleWidget(
+                              name: bdt["name"],
+                              description: bdt["designation"],
+                              image: InkWell(
+                                child: imageBytes(
+                                  bdt["image"],
+                                  sw(60.0),
+                                  sw(60.0),
+                                  false,
+                                ),
+                                onTap: () =>
+                                    onTap(employeeDetails(bdt, context)),
+                              ),
+                              hasDivider: bdt ==
+                                      _birthdaysTodayData[
+                                          _birthdaysTodayData.take(3).length -
+                                              1]
+                                  ? false
+                                  : true,
+                            ))
+                        .toList(),
+                  )
           ],
         ),
       ),

@@ -104,7 +104,7 @@ class _PayslipScreenState extends State<PayslipScreen> {
     _isSending = false;
     var _pi = 0;
     PayrollData().resetRangeValues();
-    if (PayrollData.payrollPeriod == null) {
+    if (PayrollData.payrollPeriod.isEmpty) {
       PayrollData().getParoll().then((res) {
         if (PayrollData.currentPayslipDateData != null) {
           PayrollData()

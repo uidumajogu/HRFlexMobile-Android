@@ -44,9 +44,12 @@ class _SlidesState extends State<Slides> {
       _slidePaginationBars = new List(_numberOsflides);
       for (int j = 0; j < _numberOsflides; j++) {
         _slidePaginationBars[j] = Padding(
-          padding: EdgeInsets.all(sh(5.0)),
-          child: image('assets/images/line.png', sh(3),
-              j == i ? AppColors.accentColor : AppColors.greyColor),
+          padding: EdgeInsets.all(sh(3.0)),
+          child: Container(
+            height: 2.8,
+            width: sw(50),
+            color: j == i ? AppColors.accentColor2 : AppColors.greyColor2,
+          ),
         );
       }
 
@@ -82,17 +85,20 @@ class _SlidesState extends State<Slides> {
               children: <Widget>[
                 logoText(25.0),
                 Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      widget.slideTitleList[i],
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                          fontSize: sf(28.0),
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.lightLemonColor),
+                    Container(
+                      width: sw(230.0),
+                      child: Text(
+                        widget.slideTitleList[i],
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                            fontSize: sf(27.0),
+                            fontWeight: FontWeight.w800,
+                            color: AppColors.lightLemonColor),
+                      ),
                     ),
-                    padding(5.0),
+                    padding(10.0),
                     Text(
                       widget.slideTextList[i],
                       textAlign: TextAlign.left,

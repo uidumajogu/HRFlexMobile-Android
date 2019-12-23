@@ -39,7 +39,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     _isLoading = true;
-    if (EmployeeData.employeeProfile == null) {
+    if (EmployeeData.employeeProfile.isEmpty) {
       EmployeeData().getEmployeeProfile().then((res) {
         EmployeeData().getEmployeeBirthdaysToday().then((res) {
           EmployeeData().getNewHires().then((res) {
@@ -106,21 +106,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       color: AppColors.primaryColor,
                     ),
                     Container(
-                      margin: EdgeInsets.all(sw(8.0)),
+                      padding: EdgeInsets.all(sw(8.0)),
                       child: Column(
                         children: <Widget>[
-                          padding(30.0),
+                          padding(0.0),
                           DashboardHeader(
                             onTap: (w) => modalBottomSheetMenu(context, w),
                             logout: (v) => _logout(v),
                           ),
-                          padding(18.0),
+                          padding(7.0),
                           ProfileCard(
                             onTap: (w) => modalBottomSheetMenu(context, w),
                           ),
                           // padding(8.0),
                           // LeaveCard(goToLeaveActivity: _goToLeaveActivity),
                           padding(8.0),
+
                           BirthdayCard(
                             goToBirthdays: (bl) {
                               _pushScreenWithData(

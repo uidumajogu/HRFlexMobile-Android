@@ -49,6 +49,7 @@ class EmployeeData {
         birthdaysTodayListLength = 0;
         response = false;
       } else {
+        // print(res["details"]);
         birthdaysToday = res["details"];
         if (birthdaysToday.isEmpty) {
           birthdaysTodayListLength = 0;
@@ -91,7 +92,7 @@ class EmployeeData {
   }
 
   resetEmployeeProfile() {
-    employeeProfile = null;
+    employeeProfile = {};
     hasEmployeeData = false;
   }
 }

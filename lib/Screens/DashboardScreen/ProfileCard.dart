@@ -25,7 +25,7 @@ class ProfileCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: Padding(
-        padding: EdgeInsets.all(sw(20.0)),
+        padding: EdgeInsets.all(sw(15.0)),
         child: _employeeProfileData.isNotEmpty
             ? Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,8 +86,8 @@ class ProfileCard extends StatelessWidget {
                           ? InkWell(
                               child: imageBytes(
                                 _managerProfileData["image"],
-                                sw(60.0),
-                                sw(60.0),
+                                sw(40.0),
+                                sw(40.0),
                                 false,
                               ),
                               onTap: () => onTap(

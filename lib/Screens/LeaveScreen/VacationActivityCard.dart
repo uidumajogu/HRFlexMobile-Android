@@ -5,17 +5,18 @@ import 'package:hr_flex/Common/DateUtil.dart';
 import 'package:hr_flex/Common/EmployeeDetails.dart';
 import 'package:hr_flex/Common/Functions.dart';
 import 'package:hr_flex/Common/InfoWidget.dart';
-import 'package:hr_flex/Common/NoData.dart';
 import 'package:hr_flex/Common/PeopleSummaryWidget.dart';
 import 'package:hr_flex/Data/LeaveData.dart';
 
 class VacationActivityCard extends StatelessWidget {
   final Function(Widget w) onTap;
   final Function viewTeamCalendar;
+  final List<dynamic> calendarEmployeeData;
 
   VacationActivityCard({
     this.onTap,
     this.viewTeamCalendar,
+    this.calendarEmployeeData,
   });
   final Map<dynamic, dynamic> _employeeLeaveCalendarData =
       LeaveData.employeeLeaveCalendar;
@@ -146,7 +147,7 @@ class VacationActivityCard extends StatelessWidget {
                     )
                   : PeopleSummaryWidget(
                       title: "Team Calendar",
-                      people: LeaveData.employeeLeaveTeamCalendar,
+                      people: calendarEmployeeData,
                       summaryType: "image",
                       hasDivider: false,
                       function: viewTeamCalendar,

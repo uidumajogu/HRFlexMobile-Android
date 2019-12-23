@@ -63,10 +63,13 @@ class _LoginScreenState extends State<LoginScreen> {
     final SharedPreferences loginPreferences =
         await SharedPreferences.getInstance();
     String _prefUsername = loginPreferences.getString('username');
+    String _prefPassword = loginPreferences.getString('password');
     if (_prefUsername != null) {
       setState(() {
         _username = _prefUsername;
         _usernameTextController.text = _prefUsername;
+        _password = _prefPassword;
+        _passwordTextController.text = _prefPassword;
         _rememberMe = true;
       });
     }
@@ -85,8 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
   _resetState() {
     setState(() {
       _loginIn = false;
-      _usernameTextController.text = "";
-      _passwordTextController.text = "";
+      _usernameTextController.text = _username;
+      _passwordTextController.text = _password;
     });
   }
 
@@ -96,8 +99,10 @@ class _LoginScreenState extends State<LoginScreen> {
         await SharedPreferences.getInstance();
     if (_rememberMe) {
       loginPreferences.setString('username', username);
+      loginPreferences.setString('password', password);
     } else {
       loginPreferences.setString('username', null);
+      loginPreferences.setString('password', null);
     }
 
     _apiUtil.post(_loginURL, headers: APIpathUtil.loginHEADERS, body: {
@@ -109,6 +114,8 @@ class _LoginScreenState extends State<LoginScreen> {
         _loginSuccess = false;
         _resetState();
       } else {
+        // APIpathUtil().setToken(
+        //     res["details"]["accessToken"], res["details"]["expirationDate"]);
         APIpathUtil.accessToken["accessToken"] = res["details"]["accessToken"];
         APIpathUtil.accessToken["expirationDate"] =
             res["details"]["expirationDate"];
@@ -139,7 +146,8 @@ class _LoginScreenState extends State<LoginScreen> {
         _loginIn = false;
       } else {
         _loginUser(_username, _password);
-        // print(sl);
+        // print(_username);
+        // print(_password);
       }
     }
   }
@@ -197,13 +205,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    logoText(20.0),
+                    logoText(18.0),
                     padding(15.0),
                     Text(
                       "Sign in",
                       style: TextStyle(
                         color: AppColors.whiteColor,
-                        fontSize: sf(35.0),
+                        fontSize: sf(30.0),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -213,7 +221,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Stack(
                         children: <Widget>[
                           Container(
-                            height: sh(230),
+                            height: sh(200),
                             padding: EdgeInsets.only(
                               left: sh(30.0),
                             ),
@@ -287,7 +295,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     });
                                   },
                                 ),
-                                padding(30.0),
+                                padding(50.0),
                               ],
                             ),
                           ),
@@ -375,7 +383,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                             setState(() {
                                               _rememberMe = !_rememberMe;
                                             });
-                                            print(v);
                                           },
                                         ),
                                       ),

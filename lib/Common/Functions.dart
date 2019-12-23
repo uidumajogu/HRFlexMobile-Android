@@ -317,6 +317,7 @@ logout(BuildContext context) {
   setAsRootScreen(context, "/LoginScreen");
   EmployeeData().resetEmployeeProfile();
   PayrollData().resetPayrollPeriod();
+  print("log-here");
 }
 
 //This returns a scaled font size

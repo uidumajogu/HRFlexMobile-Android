@@ -32,14 +32,23 @@ class ApiUtil {
       if (statusCode != 200 || json == null) {
         return {
           "response": "Error",
-          "reason": "Your username or password is not correct"
+          "reason": _decoder.convert(res)["message"] != null
+              ? _decoder.convert(res)["message"]
+              : "An error occured",
         };
       } else {
         return {
           "response": "Error",
-          "reason": "An error occured, please try again.."
+          "reason": _decoder.convert(res)["message"] != null
+              ? _decoder.convert(res)["message"]
+              : "An error occured",
         };
       }
+    }).catchError((error) {
+      return {
+        "response": "Error",
+        "reason": "Could not connect to the server",
+      };
     });
   }
 
@@ -57,14 +66,23 @@ class ApiUtil {
       if ((statusCode >= 500 && statusCode < 500) || json == null) {
         return {
           "response": "Error",
-          "reason": _decoder.convert(res)["message"],
+          "reason": _decoder.convert(res)["message"] != null
+              ? _decoder.convert(res)["message"]
+              : "An error occured",
         };
       } else {
         return {
           "response": "Error",
-          "reason": _decoder.convert(res)["message"],
+          "reason": _decoder.convert(res)["message"] != null
+              ? _decoder.convert(res)["message"]
+              : "An error occured",
         };
       }
+    }).catchError((error) {
+      return {
+        "response": "Error",
+        "reason": "Could not connect to the server",
+      };
     });
   }
 
@@ -74,7 +92,6 @@ class ApiUtil {
         .then((http.Response response) {
       final String res = response.body;
       final int statusCode = response.statusCode;
-      print("response body -- $res,   status code --- $statusCode");
 
       if (statusCode >= 200 && statusCode < 300) {
         return {"response": "successful", "details": "successful"};
@@ -86,6 +103,11 @@ class ApiUtil {
               : "An error occured",
         };
       }
+    }).catchError((error) {
+      return {
+        "response": "Error",
+        "reason": "Could not connect to the server",
+      };
     });
   }
 }
