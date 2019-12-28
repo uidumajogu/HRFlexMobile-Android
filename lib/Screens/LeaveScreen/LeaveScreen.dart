@@ -179,13 +179,14 @@ class _LeaveScreenState extends State<LeaveScreen> {
                       padding: EdgeInsets.symmetric(horizontal: sw(8.0)),
                       child: VacationActivityCard(
                         onTap: (w) => modalBottomSheetMenu(context, w),
+                        calendarEmployeeData: _calendarEmployeeData,
                         viewTeamCalendar: () =>
                             pushScreen(context, "/TeamLeaveCalendarScreen"),
                       ),
                     ),
                     padding(8.0),
                     SizedBox(
-                      height: DeviceConfig.screenWidth * 0.6,
+                      height: sh(180.0),
                       child: ListView(
                         scrollDirection: Axis.horizontal,
                         children: LeaveData.leaveTypes

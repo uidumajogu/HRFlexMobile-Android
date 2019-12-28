@@ -15,7 +15,7 @@ Widget organizationDetails(
     ),
     child: Padding(
       padding: EdgeInsets.all(
-        sw(30.0),
+        sw(15.0),
       ),
       child: Column(
         children: <Widget>[
@@ -49,8 +49,8 @@ Widget organizationDetails(
                         color: AppColors.greyColor.withOpacity(0.5))),
                 child: imageBytes(
                   clientDetails["logo"],
-                  sw(40.0),
-                  sw(40.0),
+                  sw(35.0),
+                  sw(35.0),
                   false,
                 ),
               )

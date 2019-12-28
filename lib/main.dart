@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:hr_flex/Screens/BirthDayScreen/BirthdayScreen.dart';
 import 'package:hr_flex/Screens/DashboardScreen/DashboardScreen.dart';
 import 'package:hr_flex/Screens/LeaveApplicationScreen/LeaveApplicationScreen.dart';
@@ -13,8 +14,13 @@ import 'package:hr_flex/Screens/SplashScreen/SplashScreen.dart';
 import 'package:hr_flex/Screens/TeamLeaveCalendarScreen/TeamLeaveCalendarScreen.dart';
 import 'package:hr_flex/Screens/WalkThroughScreen/WalkThroughScreen.dart';
 import 'package:hr_flex/Common/ColorTheme.dart';
+import 'dart:ui' as ui;
 
-void main() => runApp(MyApp());
+void main() {
+  RenderErrorBox.backgroundColor = Colors.transparent;
+  RenderErrorBox.textStyle = ui.TextStyle(color: Colors.transparent);
+  return runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   // This widget is the root of the application.

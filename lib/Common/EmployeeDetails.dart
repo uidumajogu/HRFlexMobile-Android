@@ -15,7 +15,7 @@ Widget employeeDetails(
     ),
     child: Padding(
       padding: EdgeInsets.all(
-        sw(30.0),
+        sw(15.0),
       ),
       child: Column(
         children: <Widget>[
@@ -46,8 +46,8 @@ Widget employeeDetails(
               if (employeeDetails["image"] != null)
                 imageBytes(
                   employeeDetails["image"],
-                  sw(40.0),
-                  sw(40.0),
+                  sw(60.0),
+                  sw(60.0),
                   false,
                 ),
             ],
@@ -75,7 +75,7 @@ Widget employeeDetails(
             ),
           if (employeeDetails["location"] != null)
             InfoWidget(
-              description: "Office Location",
+              description: "Location",
               text: employeeDetails["location"],
             ),
         ],

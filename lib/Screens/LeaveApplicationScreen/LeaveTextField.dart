@@ -77,7 +77,7 @@ class _LeaveTextFieldState extends State<LeaveTextField> {
         labelStyle: TextStyle(
           color: AppColors.lightGreyColor,
           fontWeight: FontWeight.normal,
-          fontSize: sf(20.0),
+          fontSize: sf(14.0),
         ),
         filled: true,
         fillColor: AppColors.backgroundColor,

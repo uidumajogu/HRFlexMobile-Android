@@ -48,10 +48,10 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
                     ),
                   ),
                   Text(
-                    "records ${widget.birthdaysTodayList.length}",
+                    "${widget.birthdaysTodayList.length} record(s) found",
                     style: TextStyle(
                       color: AppColors.primaryColor,
-                      fontSize: sf(14.0),
+                      fontSize: sf(12.0),
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -71,8 +71,8 @@ class _BirthdayScreenState extends State<BirthdayScreen> {
                                   image: InkWell(
                                     child: imageBytes(
                                       bdt["image"],
-                                      sh(60.0),
-                                      sh(60.0),
+                                      sh(40.0),
+                                      sh(40.0),
                                       false,
                                     ),
                                     onTap: () => modalBottomSheetMenu(

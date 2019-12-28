@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hr_flex/Common/ColorTheme.dart';
 import 'package:hr_flex/Common/DateUtil.dart';
 import 'package:hr_flex/Common/EmployeeDetails.dart';
@@ -39,20 +40,33 @@ class NewHiresCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Week starting ${DateUtil().format("MMMM dd", DateUtil().recentMonday())}",
+                          "This Week",
+                          // "Week starting ${DateUtil().format("MMMM dd", DateUtil().recentMonday())}",
                           style: TextStyle(
                             color: AppColors.brownColor,
-                            fontSize: sf(14.0),
+                            fontSize: sf(12.0),
                             // fontWeight: FontWeight.bold,
                           ),
                         ),
                         padding(3.0),
-                        Text(
-                          "New Hires",
-                          style: TextStyle(
-                              color: AppColors.lightPrimaryColor,
-                              fontSize: sf(22.0),
-                              fontWeight: FontWeight.bold),
+                        Row(
+                          children: <Widget>[
+                            Text(
+                              "New Hires",
+                              style: TextStyle(
+                                  color: AppColors.lightPrimaryColor,
+                                  fontSize: sf(18.0),
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: sh(5.0)),
+                              child: SvgPicture.asset(
+                                "assets/images/HiresIcon.svg",
+                                color: AppColors.brownColor,
+                                width: sw(20.0),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
@@ -60,12 +74,13 @@ class NewHiresCard extends StatelessWidget {
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(top: sh(5.0)),
-              child: Divider(
-                color: AppColors.greyColor.withOpacity(0.5),
+            if (_newHires.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: sh(5.0)),
+                child: Divider(
+                  color: AppColors.greyColor.withOpacity(0.5),
+                ),
               ),
-            ),
             _newHires.isEmpty
                 ? PeopleWidget(
                     description: "No new hires this week!",

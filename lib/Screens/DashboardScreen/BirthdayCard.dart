@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hr_flex/Common/ColorTheme.dart';
 import 'package:hr_flex/Common/DateUtil.dart';
 import 'package:hr_flex/Common/EmployeeDetails.dart';
@@ -44,23 +45,36 @@ class BirthdayCard extends StatelessWidget {
                       ),
                     ),
                     padding(3.0),
-                    Text(
-                      "Birthdays",
-                      style: TextStyle(
-                          color: AppColors.lightPrimaryColor,
-                          fontSize: sf(18.0),
-                          fontWeight: FontWeight.bold),
+                    Row(
+                      children: <Widget>[
+                        Text(
+                          "Birthdays",
+                          style: TextStyle(
+                              color: AppColors.lightPrimaryColor,
+                              fontSize: sf(18.0),
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: sh(5.0)),
+                          child: SvgPicture.asset(
+                            "assets/images/CalendarIcon.svg",
+                            color: AppColors.brownColor,
+                            width: sw(20.0),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
               ],
             ),
-            Padding(
-              padding: EdgeInsets.only(top: sh(5.0)),
-              child: Divider(
-                color: AppColors.greyColor.withOpacity(0.5),
+            if (_birthdaysTodayData.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: sh(5.0)),
+                child: Divider(
+                  color: AppColors.greyColor.withOpacity(0.5),
+                ),
               ),
-            ),
             _birthdaysTodayData.isEmpty
                 ? PeopleWidget(
                     description: "No birthdays today!",
@@ -71,32 +85,6 @@ class BirthdayCard extends StatelessWidget {
                     hasDivider: false,
                     function: () => goToBirthdays(_birthdaysTodayData),
                   ),
-
-            // Column(
-            //     children: _birthdaysTodayData
-            //         .take(3)
-            //         .map<Widget>((bdt) => PeopleWidget(
-            //               name: bdt["name"],
-            //               description: bdt["designation"],
-            //               image: InkWell(
-            //                 child: imageBytes(
-            //                   bdt["image"],
-            //                   sw(60.0),
-            //                   sw(60.0),
-            //                   false,
-            //                 ),
-            //                 onTap: () =>
-            //                     onTap(employeeDetails(bdt, context)),
-            //               ),
-            //               hasDivider: bdt ==
-            //                       _birthdaysTodayData[
-            //                           _birthdaysTodayData.take(3).length -
-            //                               1]
-            //                   ? false
-            //                   : true,
-            //             ))
-            //         .toList(),
-            //   )
           ],
         ),
       ),

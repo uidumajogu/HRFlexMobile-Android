@@ -79,7 +79,7 @@ class _ReliefOfficersScreenState extends State<ReliefOfficersScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: sh(30.0)),
+              padding: EdgeInsets.symmetric(horizontal: sh(20.0)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -87,7 +87,7 @@ class _ReliefOfficersScreenState extends State<ReliefOfficersScreen> {
                     child: Text(
                       "Cancel",
                       style: TextStyle(
-                          fontSize: sf(18),
+                          fontSize: sf(16),
                           color: AppColors.blueColor,
                           fontWeight: FontWeight.bold),
                     ),
@@ -103,7 +103,7 @@ class _ReliefOfficersScreenState extends State<ReliefOfficersScreen> {
                         child: Text(
                           "Add Relief Officer",
                           style: TextStyle(
-                            fontSize: sf(18.0),
+                            fontSize: sf(16.0),
                             color: AppColors.primaryColor,
                             fontWeight: FontWeight.bold,
                           ),
@@ -113,9 +113,9 @@ class _ReliefOfficersScreenState extends State<ReliefOfficersScreen> {
                         child: Padding(
                           padding: EdgeInsets.all(sh(2.0)),
                           child: Text(
-                            "${_reliefOfficers.length} Results found",
+                            "${_reliefOfficers.length} results found!",
                             style: TextStyle(
-                              fontSize: sf(12.0),
+                              fontSize: sf(11.0),
                               color: AppColors.lightPrimaryColor,
                             ),
                           ),
@@ -130,9 +130,9 @@ class _ReliefOfficersScreenState extends State<ReliefOfficersScreen> {
               ),
             ),
             padding(20.0),
-            Divider(
-              color: AppColors.greyColor.withOpacity(0.5),
-            ),
+            // Divider(
+            //   color: AppColors.greyColor.withOpacity(0.5),
+            // ),
             _isLoading
                 ? Container(
                     padding: EdgeInsets.all(sh(30)),
@@ -143,15 +143,15 @@ class _ReliefOfficersScreenState extends State<ReliefOfficersScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                           SizedBox(
-                            height: sw(30.0),
-                            width: sw(30.0),
+                            height: sw(40.0),
+                            width: sw(40.0),
                             child: CircularProgressIndicator(
                               valueColor: AlwaysStoppedAnimation(
                                   AppColors.lightPrimaryColor),
-                              strokeWidth: sw(5.0),
+                              strokeWidth: sw(3.0),
                             ),
                           ),
-                          padding(30.0),
+                          padding(10.0),
                           Padding(
                             padding: EdgeInsets.all(sw(30.0)),
                             child: Text(
@@ -196,8 +196,8 @@ class _ReliefOfficersScreenState extends State<ReliefOfficersScreen> {
                                                   reliefOfficer["designation"],
                                               image: imageBytes(
                                                 reliefOfficer["image"],
-                                                sh(60.0),
-                                                sh(60.0),
+                                                sh(40.0),
+                                                sh(40.0),
                                                 false,
                                               ),
                                               suffixWidget: SvgPicture.asset(

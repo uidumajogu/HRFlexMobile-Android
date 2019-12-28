@@ -10,21 +10,24 @@ class ButtonWidget extends StatelessWidget {
   final Color borderColor;
   final Color labelColor;
   final Widget prefixIcon;
+  final TextAlign alignment;
 
-  ButtonWidget(
-      {@required this.function,
-      @required this.label,
-      this.suffixIcon,
-      this.backgroundColor,
-      this.borderColor,
-      this.labelColor,
-      this.prefixIcon});
+  ButtonWidget({
+    @required this.function,
+    @required this.label,
+    this.suffixIcon,
+    this.backgroundColor,
+    this.borderColor,
+    this.labelColor,
+    this.prefixIcon,
+    this.alignment,
+  });
 
   @override
   Widget build(BuildContext context) {
     return RaisedButton(
       color: backgroundColor != null ? backgroundColor : AppColors.primaryColor,
-      padding: EdgeInsets.all(sh(16)),
+      padding: EdgeInsets.all(sh(15)),
       shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(sh(10.0)),
           side: BorderSide(
@@ -35,14 +38,18 @@ class ButtonWidget extends StatelessWidget {
         children: <Widget>[
           if (prefixIcon != null) prefixIcon,
           Expanded(
-            child: Text(
-              label,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: sf(16.0),
-                  fontWeight: FontWeight.w500,
-                  color:
-                      labelColor != null ? labelColor : AppColors.accentColor),
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: sh(5.0)),
+              child: Text(
+                label,
+                textAlign: alignment == null ? TextAlign.center : alignment,
+                style: TextStyle(
+                    fontSize: sf(16.0),
+                    fontWeight: FontWeight.w500,
+                    color: labelColor != null
+                        ? labelColor
+                        : AppColors.accentColor),
+              ),
             ),
           ),
           if (suffixIcon != null) suffixIcon

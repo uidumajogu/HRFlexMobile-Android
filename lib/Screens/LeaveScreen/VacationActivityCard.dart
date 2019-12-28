@@ -44,51 +44,43 @@ class VacationActivityCard extends StatelessWidget {
                 Text(
                   "Vacation Activity",
                   style: TextStyle(
-                    fontSize: sf(20.0),
+                    fontSize: sf(18.0),
                     color: AppColors.primaryColor,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: sw(8.0)),
-                  child: Container(
-                    height: sh(35.0),
-                    width: sh(35.0),
-                    decoration: BoxDecoration(
-                        color: AppColors.accentColor.withOpacity(0.2),
-                        shape: BoxShape.circle),
-                    child: Padding(
-                      padding: EdgeInsets.all(sh(8.0)),
-                      child: SvgPicture.asset(
-                        "assets/images/calendar.svg",
-                        color: AppColors.accentColor,
-                      ),
-                    ),
-                  ),
-                ),
+                // Padding(
+                //   padding: EdgeInsets.only(left: sh(5.0)),
+                //   child: SvgPicture.asset(
+                //     "assets/images/CalendarIcon.svg",
+                //     color: AppColors.brownColor,
+                //     width: sw(25.0),
+                //   ),
+                // ),
               ],
             ),
+            padding(10.0),
             InfoWidget(
               description: "Leave Type",
               text: _employeeLeaveCalendarData["type"] != null
                   ? _employeeLeaveCalendarData["type"]
-                  : "Nothing Scheduled",
+                  : "Nothing Scheduled!",
               hasDivider: true,
             ),
             InfoWidget(
               description: "Duration",
               text: _employeeLeaveCalendarData.isEmpty
-                  ? "Nothing Scheduled"
+                  ? "Nothing Scheduled!"
                   : _employeeLeaveCalendarData["startDate"] != null
                       ? "${DateUtil().format("MMMM dd", DateTime.parse(_employeeLeaveCalendarData["startDate"]))}  -  ${DateUtil().format("MMMM dd", DateTime.parse(_employeeLeaveCalendarData["resumptionDate"]))}"
-                      : "Nothing Scheduled",
+                      : "Nothing Scheduled!",
               chipColor: _employeeLeaveCalendarData.isEmpty
                   ? null
                   : _employeeLeaveCalendarData["status"] != null
                       ? _employeeLeaveCalendarData["status"].toUpperCase() ==
                               "SCHEDULED"
-                          ? AppColors.orangeColor
-                          : AppColors.greenColor
+                          ? AppColors.lightBlueColor
+                          : AppColors.orangeColor
                       : null,
               chipLabel: _employeeLeaveCalendarData.isEmpty
                   ? null
@@ -100,10 +92,10 @@ class VacationActivityCard extends StatelessWidget {
             InfoWidget(
               description: "Relief Officer",
               text: _employeeLeaveCalendarData.isEmpty
-                  ? "No Leave Scheduled"
+                  ? "NA"
                   : _employeeReliefOfficerData["name"] != null
                       ? _employeeReliefOfficerData["name"]
-                      : "No Leave Scheduled",
+                      : "NA",
               image: _employeeLeaveCalendarData.isEmpty
                   ? null
                   : _employeeReliefOfficerData["image"] != null
@@ -122,36 +114,35 @@ class VacationActivityCard extends StatelessWidget {
                       : null,
               hasDivider: true,
             ),
-            if (viewTeamCalendar != null)
-              LeaveData.employeeLeaveTeamCalendar.isEmpty
-                  ? Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Text(
-                          "Team Calender",
-                          style: TextStyle(
-                            color: AppColors.greyColor.withOpacity(0.8),
-                            fontSize: sf(12.0),
-                            fontWeight: FontWeight.w600,
-                          ),
+            LeaveData.employeeLeaveTeamCalendar.isEmpty
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        "Team Calender",
+                        style: TextStyle(
+                          color: AppColors.greyColor.withOpacity(0.8),
+                          fontSize: sf(12.0),
+                          fontWeight: FontWeight.w600,
                         ),
-                        padding(5.0),
-                        Text(
-                          "No Team Calender",
-                          style: TextStyle(
-                            color: AppColors.darkGreyColor,
-                            fontSize: sf(14.0),
-                          ),
+                      ),
+                      padding(5.0),
+                      Text(
+                        "Nothing Scheduled!",
+                        style: TextStyle(
+                          color: AppColors.darkGreyColor,
+                          fontSize: sf(14.0),
                         ),
-                      ],
-                    )
-                  : PeopleSummaryWidget(
-                      title: "Team Calendar",
-                      people: calendarEmployeeData,
-                      summaryType: "image",
-                      hasDivider: false,
-                      function: viewTeamCalendar,
-                    ),
+                      ),
+                    ],
+                  )
+                : PeopleSummaryWidget(
+                    title: "Team Calendar",
+                    people: calendarEmployeeData,
+                    summaryType: "image",
+                    hasDivider: false,
+                    function: viewTeamCalendar,
+                  ),
           ],
         ),
         // : NoData(msg: "No current leave activity"),

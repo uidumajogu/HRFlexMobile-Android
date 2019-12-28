@@ -23,7 +23,7 @@ class RatioBar extends StatelessWidget {
     }
 
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: sh(30.0)),
+      padding: EdgeInsets.symmetric(horizontal: sh(0.0)),
       child: Container(
         child: Stack(
           children: <Widget>[

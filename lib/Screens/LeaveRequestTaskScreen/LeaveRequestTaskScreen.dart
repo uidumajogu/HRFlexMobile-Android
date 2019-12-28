@@ -101,7 +101,8 @@ class _LeaveRequestTaskScreenState extends State<LeaveRequestTaskScreen> {
                                     LeaveRequestTaskSummaryCard(
                                         leaveTaskData: taskData))
                                 .toList(),
-                          )
+                          ),
+                          padding(sh(20)),
                         ],
                       ),
                     ),

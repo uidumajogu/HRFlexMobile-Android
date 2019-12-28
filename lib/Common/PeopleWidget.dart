@@ -33,7 +33,7 @@ class PeopleWidget extends StatelessWidget {
     }
     return Column(
       children: <Widget>[
-        padding(10.0),
+        padding(5.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
@@ -56,7 +56,7 @@ class PeopleWidget extends StatelessWidget {
                               name,
                               style: TextStyle(
                                 color: AppColors.greyColor,
-                                fontSize: sf(18.0),
+                                fontSize: sf(14.0),
                               ),
                             ),
                           padding(5.0),
@@ -67,7 +67,7 @@ class PeopleWidget extends StatelessWidget {
                                 description,
                                 style: TextStyle(
                                   color: AppColors.darkGreyColor,
-                                  fontSize: sf(12.0),
+                                  fontSize: sf(11.0),
                                 ),
                               ),
                             ),
@@ -78,7 +78,7 @@ class PeopleWidget extends StatelessWidget {
                                 description2,
                                 style: TextStyle(
                                   color: AppColors.darkGreyColor,
-                                  fontSize: sf(12.0),
+                                  fontSize: sf(11.0),
                                 ),
                               ),
                             ),
@@ -89,28 +89,57 @@ class PeopleWidget extends StatelessWidget {
               ),
             ),
             if (displayChip)
-              Chip(
-                padding: EdgeInsets.all(sw(10.0)),
-                backgroundColor: chipColor.withOpacity(0.1),
-                avatar: CircleAvatar(
-                  backgroundColor:
-                      chipColor != null ? chipColor : AppColors.backgroundColor,
+              Container(
+                padding: EdgeInsets.all(sh(5.0)),
+                decoration: BoxDecoration(
+                  color: chipColor.withOpacity(0.1),
+                  borderRadius: BorderRadius.all(Radius.circular(sh(25.0))),
                 ),
-                label: Text(
-                  chipLabel != null ? chipLabel : "",
-                  style: TextStyle(
-                    fontSize: sf(10.0),
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.primaryColor,
-                  ),
+                child: Row(
+                  children: <Widget>[
+                    CircleAvatar(
+                      maxRadius: sw(5.0),
+                      backgroundColor: chipColor != null
+                          ? chipColor
+                          : AppColors.backgroundColor,
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(left: sh(3.0)),
+                      child: Text(
+                        chipLabel != null ? chipLabel : "",
+                        style: TextStyle(
+                          fontSize: sf(9.5),
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.primaryColor,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            if (suffixWidget != null) suffixWidget
+            // Chip(
+            //   padding: EdgeInsets.all(sw(10.0)),
+            //   backgroundColor: chipColor.withOpacity(0.1),
+            //   avatar: CircleAvatar(
+            //     backgroundColor:
+            //         chipColor != null ? chipColor : AppColors.backgroundColor,
+            //   ),
+            //   label: Text(
+            //     chipLabel != null ? chipLabel : "",
+            //     style: TextStyle(
+            //       fontSize: sf(10.0),
+            //       fontWeight: FontWeight.bold,
+            //       color: AppColors.primaryColor,
+            //     ),
+            //   ),
+            // ),
+            if (suffixWidget != null)
+              suffixWidget
           ],
         ),
         if (_hasDivider)
           Padding(
-            padding: EdgeInsets.only(top: sh(10.0)),
+            padding: EdgeInsets.only(top: sh(5.0)),
             child: Divider(
               color: AppColors.greyColor.withOpacity(0.5),
             ),

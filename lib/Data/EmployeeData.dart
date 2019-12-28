@@ -6,11 +6,11 @@ class EmployeeData {
   static ApiUtil _apiUtil = new ApiUtil();
   static bool response = false;
   static bool hasEmployeeData = false;
-  static Map<String, dynamic> employeeProfile;
-  static List<dynamic> birthdaysToday;
-  static List<dynamic> newHires;
-  static int birthdaysTodayListLength;
-  static int newHiresListLength;
+  static Map<String, dynamic> employeeProfile = {};
+  static List<dynamic> birthdaysToday = [];
+  static List<dynamic> newHires = [];
+  static int birthdaysTodayListLength = 0;
+  static int newHiresListLength = 0;
   static Map<String, dynamic> headers = APIpathUtil.getHEADERS;
   static String employeesURL = APIpathUtil.baseURL + APIpathUtil.employeesPATH;
 

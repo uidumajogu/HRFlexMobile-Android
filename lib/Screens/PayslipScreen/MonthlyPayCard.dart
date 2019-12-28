@@ -50,7 +50,7 @@ class MonthlyPayCard extends StatelessWidget {
                   "Your pay breakdown",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: sf(11.0),
+                    fontSize: sf(12.0),
                     color: AppColors.greyColor,
                   ),
                 ),
@@ -63,34 +63,34 @@ class MonthlyPayCard extends StatelessWidget {
                       ? PayrollData.payslip["netValue"]
                       : 1,
                 ),
-                padding(30.0),
+                padding(20.0),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
                     Text(
                       "Gross Pay",
                       style: TextStyle(
-                        fontSize: sf(12.0),
+                        fontSize: sf(13.0),
                         color: AppColors.greyColor,
                       ),
                     ),
                     Text(
                       PayrollData.payslip["gross"] != null
-                          ? "${formatNumber(PayrollData.payslip["gross"])}"
+                          ? "${PayrollData.payslip["currency"]} ${formatNumber(PayrollData.payslip["gross"])}"
                           : "${formatNumber(0)}",
                       style: TextStyle(
-                        fontSize: sf(18.0),
+                        fontSize: sf(20.0),
                         color: AppColors.primaryColor,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
                   ],
                 ),
-                padding(15.0),
+                padding(20.0),
                 PayBar(
                   description: "Deductions",
                   amount: PayrollData.payslip["deductionValue"] != null
-                      ? "${formatNumber(PayrollData.payslip["deductionValue"])}"
+                      ? "${PayrollData.payslip["currency"]} ${formatNumber(PayrollData.payslip["deductionValue"])}"
                       : "${formatNumber(0)}",
                   isAmountNegative: true,
                   isMonthlySlip: true,
@@ -98,8 +98,6 @@ class MonthlyPayCard extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(
                     left: sw(20.0),
-                    top: sh(10.0),
-                    bottom: sh(10.0),
                   ),
                   child: Divider(
                     color: AppColors.greyColor.withOpacity(0.5),
@@ -108,7 +106,7 @@ class MonthlyPayCard extends StatelessWidget {
                 PayBar(
                   description: "Net Pay",
                   amount: PayrollData.payslip["netValue"] != null
-                      ? "${formatNumber(PayrollData.payslip["netValue"])}"
+                      ? "${PayrollData.payslip["currency"]} ${formatNumber(PayrollData.payslip["netValue"])}"
                       : "${formatNumber(0)}",
                   isAmountNegative: false,
                   isMonthlySlip: true,

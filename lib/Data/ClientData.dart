@@ -4,13 +4,16 @@ import 'package:hr_flex/Common/ApiUtil.dart';
 class ClientData {
   static ApiUtil _apiUtil = new ApiUtil();
   static bool response = false;
-  static Map<String, dynamic> clientDetails;
+  static Map<String, dynamic> clientDetails = {};
   static Map<String, dynamic> headers = APIpathUtil.getHEADERS;
   static String clientsURL = APIpathUtil.baseURL + APIpathUtil.clientsPATH;
 
   //function to get client data
   Future<bool> getClientProfile() async {
-    if (clientDetails != null) return true;
+    if (clientDetails == null) {
+      clientDetails = {};
+    }
+    if (clientDetails.isNotEmpty) return true;
 
     headers["authorization"] =
         APIpathUtil.addPath + APIpathUtil.accessToken["accessToken"];

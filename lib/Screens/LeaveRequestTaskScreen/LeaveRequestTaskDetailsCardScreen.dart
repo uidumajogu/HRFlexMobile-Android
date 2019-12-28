@@ -8,6 +8,7 @@ import 'package:hr_flex/Common/DateUtil.dart';
 import 'package:hr_flex/Common/EmployeeDetails.dart';
 import 'package:hr_flex/Common/Functions.dart';
 import 'package:hr_flex/Common/InfoWidget.dart';
+import 'package:hr_flex/Common/MyCircularProgressIndicator.dart';
 import 'package:hr_flex/Common/PeopleWidget.dart';
 import 'package:hr_flex/Screens/LeaveApplicationScreen/ButtonWidget.dart';
 import 'package:hr_flex/Screens/LeaveApplicationScreen/LeaveTextField.dart';
@@ -36,6 +37,7 @@ class _LeaveRequestTaskDetailsCardScreenState
   ApiUtil _apiUtil;
   final String leaveURL = APIpathUtil.baseURL + APIpathUtil.leavePATH;
   final Map<String, dynamic> headers = APIpathUtil.getHEADERS;
+  bool _showLoadingIndicator;
 
   @override
   void initState() {
@@ -47,13 +49,16 @@ class _LeaveRequestTaskDetailsCardScreenState
     _leaveApplicationStatusInformation = {};
     _apiUtil = new ApiUtil();
     _approvalStatus = false;
+    _showLoadingIndicator = false;
   }
 
   _onChangeLeaveApprovalComment(comment) {
     _leaveApprovalComment = comment;
-    setState(() {
-      _commentErrorMessage = null;
-    });
+    if (_commentErrorMessage != null) {
+      setState(() {
+        _commentErrorMessage = null;
+      });
+    }
   }
 
   bool _enteredLeaveApprovalComment(comment) {
@@ -93,6 +98,9 @@ class _LeaveRequestTaskDetailsCardScreenState
 
   _approveLeaveApplication(confirmed) {
     if (confirmed) {
+      setState(() {
+        _showLoadingIndicator = true;
+      });
       _leaveApplicationStatusInformation = {};
 
       _leaveApplicationStatusInformation["days"] = int.parse(_newLeaveDays);
@@ -107,8 +115,14 @@ class _LeaveRequestTaskDetailsCardScreenState
               headers: headers, body: _leaveApplicationStatusInformation)
           .then((dynamic res) {
         if (res["response"] == "Error") {
+          setState(() {
+            _showLoadingIndicator = false;
+          });
           errorAlert(context, res["reason"]);
         } else {
+          setState(() {
+            _showLoadingIndicator = false;
+          });
           successAlert(context,
               "${widget.leaveTaskData["type"]} Leave for ${widget.leaveTaskData["employee"]["name"]} has been updated successfuly!");
           Navigator.of(context).pop();
@@ -163,8 +177,8 @@ class _LeaveRequestTaskDetailsCardScreenState
                           image: InkWell(
                             child: imageBytes(
                               _employeeData["image"],
-                              sh(60.0),
-                              sh(60.0),
+                              sh(40.0),
+                              sh(40.0),
                               false,
                             ),
                             onTap: () => modalBottomSheetMenu(
@@ -184,7 +198,7 @@ class _LeaveRequestTaskDetailsCardScreenState
                                   "Leave Type",
                                   style: TextStyle(
                                     color: AppColors.greyColor.withOpacity(0.8),
-                                    fontSize: sf(12.0),
+                                    fontSize: sf(11.0),
                                     fontWeight: FontWeight.w600,
                                   ),
                                 ),
@@ -193,10 +207,10 @@ class _LeaveRequestTaskDetailsCardScreenState
                                   "${widget.leaveTaskData["type"]}",
                                   style: TextStyle(
                                     color: AppColors.darkGreyColor,
-                                    fontSize: sf(14.0),
+                                    fontSize: sf(12.0),
                                   ),
                                 ),
-                                padding(10.0),
+                                padding(5.0),
                               ],
                             ),
                             Flexible(
@@ -219,7 +233,7 @@ class _LeaveRequestTaskDetailsCardScreenState
                                       style: TextStyle(
                                         color: AppColors.greyColor
                                             .withOpacity(0.8),
-                                        fontSize: sf(12.0),
+                                        fontSize: sf(11.0),
                                         fontWeight: FontWeight.w600,
                                       ),
                                     ),
@@ -228,10 +242,10 @@ class _LeaveRequestTaskDetailsCardScreenState
                                       "${DateUtil().format("MMMMd", DateTime.parse(widget.leaveTaskData["startDate"]))} - ${DateUtil().format("MMMMd", DateTime.parse(widget.leaveTaskData["endDate"]))}",
                                       style: TextStyle(
                                         color: AppColors.darkGreyColor,
-                                        fontSize: sf(14.0),
+                                        fontSize: sf(12.0),
                                       ),
                                     ),
-                                    padding(10.0),
+                                    padding(5.0),
                                   ],
                                 ),
                               ),
@@ -273,7 +287,7 @@ class _LeaveRequestTaskDetailsCardScreenState
                                 "Change",
                                 style: TextStyle(
                                   color: AppColors.blueColor,
-                                  fontSize: sf(16),
+                                  fontSize: sf(12),
                                 ),
                               ),
                             ),
@@ -311,57 +325,66 @@ class _LeaveRequestTaskDetailsCardScreenState
                               )
                             ],
                           ),
-                        padding(20.0),
+                        padding(10.0),
                         LeaveTextField(
                           labelText: "Comment",
                           textInputType: TextInputType.text,
                           onSubmitted: (v) => _enteredLeaveApprovalComment(v),
                           textInputErrorMessage: _commentErrorMessage,
                           onChange: (v) => _onChangeLeaveApprovalComment(v),
-                          textFieldHeight: 3,
+                          textFieldHeight: 2,
                         ),
-                        padding(30.0),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Flexible(
-                              child: ButtonWidget(
-                                label: "Approve",
-                                function: () {
-                                  if (_enteredLeaveApprovalComment(
-                                      _leaveApprovalComment)) {
-                                    setState(() {
-                                      _approvalStatus = true;
-                                    });
-                                    _approveLeaveApplicationConfirmationDialog(
-                                        true);
-                                  }
-                                },
+                        padding(20.0),
+                        if (_showLoadingIndicator)
+                          Container(
+                            alignment: Alignment.center,
+                            child: MyCircularProgressIndicator(
+                              size: 40.0,
+                              strokeWidth: 2.5,
+                            ),
+                          ),
+                        if (!_showLoadingIndicator)
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              Flexible(
+                                child: ButtonWidget(
+                                  label: "Approve",
+                                  function: () {
+                                    if (_enteredLeaveApprovalComment(
+                                        _leaveApprovalComment)) {
+                                      setState(() {
+                                        _approvalStatus = true;
+                                      });
+                                      _approveLeaveApplicationConfirmationDialog(
+                                          true);
+                                    }
+                                  },
+                                ),
                               ),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(sh(10)),
-                            ),
-                            Flexible(
-                              child: ButtonWidget(
-                                label: "Decline",
-                                labelColor: AppColors.primaryColor,
-                                backgroundColor: AppColors.whiteColor,
-                                borderColor: AppColors.accentColor,
-                                function: () {
-                                  if (_enteredLeaveApprovalComment(
-                                      _leaveApprovalComment)) {
-                                    setState(() {
-                                      _approvalStatus = false;
-                                    });
-                                    _approveLeaveApplicationConfirmationDialog(
-                                        false);
-                                  }
-                                },
+                              Padding(
+                                padding: EdgeInsets.all(sh(10)),
                               ),
-                            ),
-                          ],
-                        ),
+                              Flexible(
+                                child: ButtonWidget(
+                                  label: "Decline",
+                                  labelColor: AppColors.primaryColor,
+                                  backgroundColor: AppColors.whiteColor,
+                                  borderColor: AppColors.accentColor,
+                                  function: () {
+                                    if (_enteredLeaveApprovalComment(
+                                        _leaveApprovalComment)) {
+                                      setState(() {
+                                        _approvalStatus = false;
+                                      });
+                                      _approveLeaveApplicationConfirmationDialog(
+                                          false);
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
                         padding(10),
                       ],
                     ),

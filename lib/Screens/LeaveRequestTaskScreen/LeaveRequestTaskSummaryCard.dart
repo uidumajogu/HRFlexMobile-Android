@@ -24,7 +24,7 @@ class LeaveRequestTaskSummaryCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(sh(10.0)),
           ),
           child: Padding(
-            padding: EdgeInsets.all(sw(10.0)),
+            padding: EdgeInsets.all(sw(15.0)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
@@ -35,8 +35,8 @@ class LeaveRequestTaskSummaryCard extends StatelessWidget {
                   image: InkWell(
                     child: imageBytes(
                       _employeeData["image"],
-                      sh(60.0),
-                      sh(60.0),
+                      sh(40.0),
+                      sh(40.0),
                       false,
                     ),
                     onTap: () => modalBottomSheetMenu(
@@ -46,99 +46,99 @@ class LeaveRequestTaskSummaryCard extends StatelessWidget {
                   ),
                   hasDivider: true,
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: sh(15.0)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "Leave Type",
-                            style: TextStyle(
-                              color: AppColors.greyColor.withOpacity(0.8),
-                              fontSize: sf(12.0),
-                              fontWeight: FontWeight.w600,
-                            ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          "Leave Type",
+                          style: TextStyle(
+                            color: AppColors.greyColor.withOpacity(0.8),
+                            fontSize: sf(11.0),
+                            fontWeight: FontWeight.w600,
                           ),
-                          padding(5.0),
-                          Text(
+                        ),
+                        padding(5.0),
+                        Container(
+                          child: Text(
                             "${leaveTaskData["type"]}",
                             style: TextStyle(
                               color: AppColors.darkGreyColor,
-                              fontSize: sf(14.0),
+                              fontSize: sf(12.0),
                             ),
                           ),
-                          padding(10.0),
-                        ],
-                      ),
-                      Flexible(
-                        child: InkWell(
-                          child: Container(
-                            padding: EdgeInsets.only(left: sh(15)),
-                            decoration: BoxDecoration(
-                              border: Border(
-                                left: BorderSide(
-                                  width: 0.5,
-                                  color: AppColors.greyColor.withOpacity(0.5),
-                                ),
+                        ),
+                        // padding(10.0),
+                      ],
+                    ),
+                    Flexible(
+                      child: InkWell(
+                        child: Container(
+                          padding: EdgeInsets.only(left: sh(15)),
+                          decoration: BoxDecoration(
+                            border: Border(
+                              left: BorderSide(
+                                width: 0.5,
+                                color: AppColors.greyColor.withOpacity(0.5),
                               ),
                             ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: <Widget>[
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      "Duration",
-                                      style: TextStyle(
-                                        color: AppColors.greyColor
-                                            .withOpacity(0.8),
-                                        fontSize: sf(12.0),
-                                        fontWeight: FontWeight.w600,
-                                      ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: <Widget>[
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  Text(
+                                    "Duration",
+                                    style: TextStyle(
+                                      color:
+                                          AppColors.greyColor.withOpacity(0.8),
+                                      fontSize: sf(11.0),
+                                      fontWeight: FontWeight.w600,
                                     ),
-                                    padding(5.0),
-                                    Text(
+                                  ),
+                                  padding(5.0),
+                                  Container(
+                                    child: Text(
                                       "${DateUtil().format("MMMMd", DateTime.parse(leaveTaskData["startDate"]))} - ${DateUtil().format("MMMMd", DateTime.parse(leaveTaskData["endDate"]))}",
                                       style: TextStyle(
                                         color: AppColors.darkGreyColor,
-                                        fontSize: sf(14.0),
+                                        fontSize: sf(12.0),
                                       ),
                                     ),
-                                    padding(10.0),
-                                  ],
-                                ),
-                                Padding(
-                                  padding: EdgeInsets.only(left: sh(15.0)),
-                                  child: SvgPicture.asset(
-                                    "assets/images/chevronright.svg",
-                                    color: AppColors.primaryColor,
                                   ),
+                                  // padding(10.0),
+                                ],
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(left: sh(15.0)),
+                                child: SvgPicture.asset(
+                                  "assets/images/chevronright.svg",
+                                  color: AppColors.primaryColor,
                                 ),
-                              ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        onTap: () => {
+                          pushScreenWithData(
+                            context,
+                            LeaveRequestTaskDetailsCardScreen(
+                              leaveTaskData: leaveTaskData,
                             ),
                           ),
-                          onTap: () => {
-                            pushScreenWithData(
-                              context,
-                              LeaveRequestTaskDetailsCardScreen(
-                                leaveTaskData: leaveTaskData,
-                              ),
-                            ),
-                          },
-                        ),
+                        },
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
         ),
-        padding(10),
       ],
     );
   }

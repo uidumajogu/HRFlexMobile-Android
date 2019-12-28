@@ -109,8 +109,8 @@ class _TeamLeaveCalendarScreenState extends State<TeamLeaveCalendarScreen> {
                                         image: InkWell(
                                           child: imageBytes(
                                             teamMember["employee"]["image"],
-                                            sh(60.0),
-                                            sh(60.0),
+                                            sh(40.0),
+                                            sh(40.0),
                                             false,
                                           ),
                                           onTap: () => modalBottomSheetMenu(
@@ -124,8 +124,8 @@ class _TeamLeaveCalendarScreenState extends State<TeamLeaveCalendarScreen> {
                                             ? teamMember["status"]
                                                         .toUpperCase() ==
                                                     "SCHEDULED"
-                                                ? AppColors.orangeColor
-                                                : AppColors.greenColor
+                                                ? AppColors.lightBlueColor
+                                                : AppColors.orangeColor
                                             : null,
                                         chipLabel: teamMember["status"] != null
                                             ? teamMember["status"].toUpperCase()

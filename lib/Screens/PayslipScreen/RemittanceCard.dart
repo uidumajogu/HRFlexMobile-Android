@@ -12,16 +12,17 @@ class RemittanceCard extends StatelessWidget {
   RemittanceCard({this.onTap});
   @override
   Widget build(BuildContext context) {
+    print(PayrollData.nhfRemittance["amount"]);
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10.0),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.all(sh(20.0)),
-            child: Column(
+      child: Padding(
+        padding: EdgeInsets.all(sh(20.0)),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
@@ -41,46 +42,46 @@ class RemittanceCard extends StatelessWidget {
                 ),
               ],
             ),
-          ),
-          padding(5.0),
-          RemittanceBar(
-            description: "Employee Pension",
-            amount: PayrollData.pensionRemittance["amount"] != null
-                ? "${formatNumber(PayrollData.pensionRemittance["amount"])}"
-                : "${formatNumber(0)}",
-            text1: PayrollData.pensionRemittance["holder"],
-            text2: PayrollData.pensionRemittance["number"],
-            onTap: (t) => onTap(t),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: sh(10.0)),
-            child: Divider(
-              color: AppColors.greyColor.withOpacity(0.5),
+            padding(20.0),
+            RemittanceBar(
+              description: "Employee Pension",
+              amount: PayrollData.pensionRemittance["amount"] != null
+                  ? "${PayrollData.pensionRemittance["amount"] != 0 ? PayrollData.payslip["currency"] : ""} ${formatNumber(PayrollData.pensionRemittance["amount"])}"
+                  : "${formatNumber(0)}",
+              text1: PayrollData.pensionRemittance["holder"],
+              text2: PayrollData.pensionRemittance["number"],
+              onTap: (t) => onTap(t),
             ),
-          ),
-          RemittanceBar(
-            description: "Personal Income Tax",
-            amount: PayrollData.taxRemittance["amount"] != null
-                ? "${formatNumber(PayrollData.taxRemittance["amount"])}"
-                : "${formatNumber(0)}",
-            onTap: (t) => onTap(t),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: sh(10.0)),
-            child: Divider(
-              color: AppColors.greyColor.withOpacity(0.5),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: sh(5.0)),
+              child: Divider(
+                color: AppColors.greyColor.withOpacity(0.5),
+              ),
             ),
-          ),
-          RemittanceBar(
-            description: "NHF Contribution",
-            amount: PayrollData.nhfRemittance["amount"] != null
-                ? "${formatNumber(PayrollData.nhfRemittance["amount"])}"
-                : "${formatNumber(0)}",
-            text1: PayrollData.nhfRemittance["holder"],
-            onTap: (t) => onTap(t),
-          ),
-          padding(20.0),
-        ],
+            RemittanceBar(
+              description: "Personal Income Tax",
+              amount: PayrollData.taxRemittance["amount"] != null
+                  ? "${PayrollData.pensionRemittance["amount"] != 0 ? PayrollData.payslip["currency"] : ""} ${formatNumber(PayrollData.taxRemittance["amount"])}"
+                  : "${formatNumber(0)}",
+              onTap: (t) => onTap(t),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: sh(5.0)),
+              child: Divider(
+                color: AppColors.greyColor.withOpacity(0.5),
+              ),
+            ),
+            RemittanceBar(
+              description: "NHF Contribution",
+              amount: PayrollData.nhfRemittance["amount"] != null
+                  ? "${PayrollData.pensionRemittance["amount"] != 0 ? PayrollData.payslip["currency"] : ""} ${formatNumber(PayrollData.nhfRemittance["amount"])}"
+                  : "${formatNumber(0)}",
+              text1: PayrollData.nhfRemittance["holder"],
+              onTap: (t) => onTap(t),
+            ),
+            // padding(20.0),
+          ],
+        ),
       ),
     );
   }

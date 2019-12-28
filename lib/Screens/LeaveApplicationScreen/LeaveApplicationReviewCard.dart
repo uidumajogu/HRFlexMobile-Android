@@ -4,6 +4,7 @@ import 'package:hr_flex/Common/ColorTheme.dart';
 import 'package:hr_flex/Common/EmployeeDetails.dart';
 import 'package:hr_flex/Common/Functions.dart';
 import 'package:hr_flex/Common/InfoWidget.dart';
+import 'package:hr_flex/Common/MyCircularProgressIndicator.dart';
 import 'package:hr_flex/Screens/LeaveApplicationScreen/ButtonWidget.dart';
 
 class LeaveApplicationReviewCard extends StatelessWidget {
@@ -17,6 +18,7 @@ class LeaveApplicationReviewCard extends StatelessWidget {
   final String leaveDays;
   final Map<dynamic, dynamic> reliefOfficerData;
   final Function function;
+  final bool showIndicator;
 
   LeaveApplicationReviewCard({
     @required this.leaveTypeData,
@@ -29,6 +31,7 @@ class LeaveApplicationReviewCard extends StatelessWidget {
     @required this.function,
     @required this.leaveDays,
     @required this.reliefOfficerData,
+    this.showIndicator,
   });
 
   @override
@@ -53,8 +56,8 @@ class LeaveApplicationReviewCard extends StatelessWidget {
                       Text(
                         leaveTypeData["type"],
                         style: TextStyle(
-                          fontSize: sf(14.0),
-                          color: AppColors.accentColor,
+                          fontSize: sf(12.0),
+                          color: AppColors.brownColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -75,7 +78,7 @@ class LeaveApplicationReviewCard extends StatelessWidget {
               padding(20.0),
               Column(
                 children: <Widget>[
-                  padding(10.0),
+                  padding(5.0),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -102,15 +105,15 @@ class LeaveApplicationReviewCard extends StatelessWidget {
                             ),
                             Text(
                               int.parse(leaveDays) < 2
-                                  ? "$leaveDays Working Day"
-                                  : "$leaveDays Working Days",
+                                  ? "$leaveDays ${leaveTypeData["mode"].toString()}"
+                                  : "$leaveDays ${leaveTypeData["mode"].toString()}",
                               style: TextStyle(
                                 color: AppColors.lightPrimaryColor,
                                 fontSize: sf(12.0),
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
-                            padding(10.0),
+                            padding(5.0),
                           ],
                         ),
                       ),
@@ -141,7 +144,7 @@ class LeaveApplicationReviewCard extends StatelessWidget {
                                 fontSize: sf(14.0),
                               ),
                             ),
-                            padding(10.0),
+                            padding(5.0),
                           ],
                         ),
                       ),
@@ -152,7 +155,7 @@ class LeaveApplicationReviewCard extends StatelessWidget {
                   ),
                 ],
               ),
-              padding(10.0),
+              padding(5.0),
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: sw(8.0)),
                 child: Column(
@@ -163,8 +166,8 @@ class LeaveApplicationReviewCard extends StatelessWidget {
                       image: InkWell(
                         child: imageBytes(
                           reliefOfficerData["image"],
-                          sw(60.0),
-                          sw(60.0),
+                          sw(40.0),
+                          sw(40.0),
                           false,
                         ),
                         onTap: () => modalBottomSheetMenu(
@@ -193,14 +196,23 @@ class LeaveApplicationReviewCard extends StatelessWidget {
                       hasDivider: false,
                     ),
                     padding(20.0),
-                    ButtonWidget(
-                      label: "Submit Request",
-                      suffixIcon: SvgPicture.asset(
-                        "assets/images/chevronright.svg",
-                        color: AppColors.accentColor,
+                    if (showIndicator)
+                      Container(
+                        alignment: Alignment.center,
+                        child: MyCircularProgressIndicator(
+                          size: 40.0,
+                          strokeWidth: 2.5,
+                        ),
                       ),
-                      function: function,
-                    ),
+                    if (!showIndicator)
+                      ButtonWidget(
+                        label: "Submit Request",
+                        suffixIcon: SvgPicture.asset(
+                          "assets/images/chevronright.svg",
+                          color: AppColors.accentColor,
+                        ),
+                        function: function,
+                      ),
                   ],
                 ),
               ),

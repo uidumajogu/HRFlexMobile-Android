@@ -45,6 +45,7 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
   String _supportingDocumentFileName;
   String _supportingDocumentFileBase64;
   bool _supportingDocumentUploaded;
+  bool _showIndicator;
   Map<dynamic, dynamic> _leaveApplicationInformation;
   Map<dynamic, dynamic> _supportingDocument;
   Map<dynamic, dynamic> _leaveDurationInformation;
@@ -87,6 +88,7 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
     _supportingDocumentFileName = "";
     _supportingDocumentFileBase64 = "";
     _supportingDocumentUploaded = false;
+    _showIndicator = false;
   }
 
   _onChangeLeaveDays(v) {
@@ -136,9 +138,11 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
 
   _contactPhonenumberOnChange(v) {
     _contactPhonenumber = v;
-    setState(() {
-      _contactPhonenumberErrorText = null;
-    });
+    if (_contactPhonenumberErrorText != null) {
+      setState(() {
+        _contactPhonenumberErrorText = null;
+      });
+    }
   }
 
   bool _enteredContactPhonenumber(v) {
@@ -156,9 +160,11 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
 
   _contactAddressOnChange(v) {
     _contactAddress = v;
-    setState(() {
-      _contactAddressErrorText = null;
-    });
+    if (_contactAddressErrorText != null) {
+      setState(() {
+        _contactAddressErrorText = null;
+      });
+    }
   }
 
   bool _enteredContactAddress(v) {
@@ -176,9 +182,11 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
 
   _commentOnChange(v) {
     _comment = v;
-    setState(() {
-      _commentErrorText = null;
-    });
+    if (_commentErrorText != null) {
+      setState(() {
+        _commentErrorText = null;
+      });
+    }
   }
 
   bool _enteredComment(v) {
@@ -261,8 +269,6 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
   }
 
   bool _includedSupportingDocument() {
-    print("documentRequired - - ${widget.leaveTypeData["documentRequired"]}");
-
     if (_supportingDocumentFileName == "" &&
         widget.leaveTypeData["documentRequired"]) {
       setState(() {
@@ -290,16 +296,21 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
     }
 
     if (_canGoToNext) {
+      setState(() {
+        _showIndicator = true;
+      });
       if (currentStep == 0) {
         getLeaveDuration().then((res) {
           if (res) {
             setState(() {
+              _showIndicator = false;
               leaveApplicationIndex = currentStep + 1;
             });
           }
         });
       } else {
         setState(() {
+          _showIndicator = false;
           leaveApplicationIndex = currentStep + 1;
         });
       }
@@ -349,6 +360,9 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
   }
 
   submitLeaveApplication() {
+    setState(() {
+      _showIndicator = true;
+    });
     _leaveApplicationInformation = {};
     _supportingDocument = {};
 
@@ -371,8 +385,14 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
             headers: headers, body: _leaveApplicationInformation)
         .then((dynamic res) {
       if (res["response"] == "Error") {
+        setState(() {
+          _showIndicator = false;
+        });
         errorAlert(context, res["reason"]);
       } else {
+        setState(() {
+          _showIndicator = false;
+        });
         successAlert(context,
             "Your ${widget.leaveTypeData["type"]} request has been submitted successfuly!");
         Navigator.of(context).pop();
@@ -416,6 +436,7 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
                         onChangeLeaveDays: (v) => _onChangeLeaveDays(v),
                         initialLeaveDate: selectedStartDate,
                         intiialLeaveDays: selectedLeaveDays,
+                        showIndicator: _showIndicator,
                       )
                     : leaveApplicationIndex == 1
                         ? LeaveSupportInformationCard(
@@ -437,8 +458,8 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
                             commentInputChange: _commentOnChange,
                             submitComment: _enteredComment,
                             commentErrorMessage: _commentErrorText,
-                            contactPhonenumberInputChange:
-                                _contactPhonenumberOnChange,
+                            contactPhonenumberInputChange: (v) =>
+                                _contactPhonenumberOnChange(v),
                             submitContactPhonenumber:
                                 _enteredContactPhonenumber,
                             contactPhonenumberErrorMessage:
@@ -460,6 +481,7 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
                                 _supportingDocumentUploaded,
                             supportingDocumentFileName:
                                 _supportingDocumentFileName,
+                            showIndicator: _showIndicator,
                           )
                         : leaveApplicationIndex == 2
                             ? LeaveApplicationReviewCard(
@@ -477,6 +499,7 @@ class _LeaveApplicationScreenState extends State<LeaveApplicationScreen> {
                                 comments: _comment,
                                 function: () => submitLeaveApplication(),
                                 reliefOfficerData: _reliefOfficerData,
+                                showIndicator: _showIndicator,
                               )
                             : padding(0)),
           ),

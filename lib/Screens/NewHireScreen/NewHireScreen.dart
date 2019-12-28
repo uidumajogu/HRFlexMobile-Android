@@ -59,8 +59,8 @@ class _NewHireScreenState extends State<NewHireScreen> {
                                   image: InkWell(
                                     child: imageBytes(
                                       nhl["image"],
-                                      sh(60.0),
-                                      sh(60.0),
+                                      sh(40.0),
+                                      sh(40.0),
                                       false,
                                     ),
                                     onTap: () => modalBottomSheetMenu(

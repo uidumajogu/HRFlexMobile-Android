@@ -9,12 +9,13 @@ class LeaveDatePickerTextField extends StatefulWidget {
   final Function(String selectedStartDate) startDate;
   final String dateErrorText;
   final String initialValue;
+  final String lastDate;
 
-  LeaveDatePickerTextField({
-    @required this.startDate,
-    @required this.dateErrorText,
-    this.initialValue,
-  });
+  LeaveDatePickerTextField(
+      {@required this.startDate,
+      @required this.dateErrorText,
+      this.initialValue,
+      @required this.lastDate});
 
   @override
   _LeaveDatePickerTextFieldState createState() =>
@@ -95,7 +96,7 @@ class _LeaveDatePickerTextFieldState extends State<LeaveDatePickerTextField> {
           errorText: selectedLeaveDate == "" ? _dateErrorText : null,
           suffixIcon: Container(
             decoration: BoxDecoration(
-              color: AppColors.primaryColor,
+              // color: AppColors.primaryColor,
               borderRadius: BorderRadius.only(
                 topRight: Radius.circular(sh(10.0)),
                 bottomRight: Radius.circular(sh(10.0)),
@@ -104,7 +105,7 @@ class _LeaveDatePickerTextFieldState extends State<LeaveDatePickerTextField> {
             padding: EdgeInsets.all(sh(15.0)),
             child: SvgPicture.asset(
               "assets/images/calendar.svg",
-              color: AppColors.accentColor,
+              color: AppColors.brownColor,
             ),
           ),
         ),
@@ -113,7 +114,8 @@ class _LeaveDatePickerTextFieldState extends State<LeaveDatePickerTextField> {
             context: context,
             firstDate: DateTime.now().add(Duration(days: 1)),
             initialDate: DateTime.now().add(Duration(days: 1)),
-            lastDate: DateTime(DateTime.now().year + 1),
+            lastDate: DateTime.parse(widget.lastDate),
+            // DateTime(DateTime.now().year + 1),
           );
         },
         onChanged: (value) {

@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hr_flex/Common/ColorTheme.dart';
 import 'package:hr_flex/Common/Functions.dart';
 import 'package:hr_flex/Common/InfoWidget.dart';
+import 'package:hr_flex/Common/MyCircularProgressIndicator.dart';
 import 'package:hr_flex/Screens/LeaveApplicationScreen/ButtonWidget.dart';
 import 'package:hr_flex/Screens/LeaveApplicationScreen/LeaveDatePickerTextField.dart';
 import 'package:hr_flex/Screens/LeaveApplicationScreen/LeaveTextField.dart';
@@ -18,6 +19,7 @@ class StartLeaveApplicationCard extends StatelessWidget {
   final Function(String change) onChangeLeaveDays;
   final String initialLeaveDate;
   final String intiialLeaveDays;
+  final bool showIndicator;
 
   StartLeaveApplicationCard({
     @required this.leaveTypeData,
@@ -30,6 +32,7 @@ class StartLeaveApplicationCard extends StatelessWidget {
     @required this.onChangeLeaveDays,
     @required this.initialLeaveDate,
     @required this.intiialLeaveDays,
+    this.showIndicator,
   });
 
   @override
@@ -54,14 +57,14 @@ class StartLeaveApplicationCard extends StatelessWidget {
                       Text(
                         "Apply for Leave",
                         style: TextStyle(
-                          fontSize: sf(14.0),
-                          color: AppColors.accentColor,
+                          fontSize: sf(12.0),
+                          color: AppColors.brownColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       padding(5.0),
                       Text(
-                        leaveTypeData["type"].split(" ")[0],
+                        leaveTypeData["type"],
                         style: TextStyle(
                           fontSize: sf(18.0),
                           color: AppColors.primaryColor,
@@ -75,7 +78,7 @@ class StartLeaveApplicationCard extends StatelessWidget {
               ),
               padding(10.0),
               InfoWidget(
-                description: "Financial Year",
+                description: "Year",
                 text: leaveTypeData["financialYear"] != null
                     ? leaveTypeData["financialYear"]
                     : "Not Available",
@@ -84,21 +87,21 @@ class StartLeaveApplicationCard extends StatelessWidget {
               InfoWidget(
                 description: "Leave Limit",
                 text: leaveTypeData["maximum"] != null
-                    ? "${leaveTypeData["maximum"].toString()} Days"
+                    ? "${leaveTypeData["maximum"].toString()} ${leaveTypeData["mode"].toString()}"
                     : "Not Available",
                 hasDivider: true,
               ),
-              InfoWidget(
-                description: "Earned Days",
-                text: leaveTypeData["earned"] != null
-                    ? "${leaveTypeData["earned"].toString()} Days"
-                    : "Not Available",
-                hasDivider: true,
-              ),
+              // InfoWidget(
+              //   description: "Earned Days",
+              //   text: leaveTypeData["earned"] != null
+              //       ? "${leaveTypeData["earned"].toString()} Days"
+              //       : "Not Available",
+              //   hasDivider: true,
+              // ),
               InfoWidget(
                 description: "Days Left",
                 text: leaveTypeData["available"] != null
-                    ? "${leaveTypeData["available"].toString()} Days"
+                    ? "${leaveTypeData["available"].toString()} ${leaveTypeData["mode"].toString()}"
                     : "Not Available",
                 hasDivider: false,
               ),
@@ -109,6 +112,7 @@ class StartLeaveApplicationCard extends StatelessWidget {
                   startDate: (v) => startDate(v),
                   dateErrorText: dateErrorText,
                   initialValue: initialLeaveDate,
+                  lastDate: "${leaveTypeData["maximumStartDate"]}",
                 ),
               ),
               padding(10.0),
@@ -127,14 +131,24 @@ class StartLeaveApplicationCard extends StatelessWidget {
                 ),
               ),
               padding(25.0),
-              ButtonWidget(
-                label: "Continue",
-                suffixIcon: SvgPicture.asset(
-                  "assets/images/chevronright.svg",
-                  color: AppColors.accentColor,
+              if (showIndicator)
+                Container(
+                  alignment: Alignment.center,
+                  child: MyCircularProgressIndicator(
+                    size: 40.0,
+                    strokeWidth: 2.5,
+                  ),
                 ),
-                function: function,
-              ),
+
+              if (!showIndicator)
+                ButtonWidget(
+                  label: "Continue",
+                  suffixIcon: SvgPicture.asset(
+                    "assets/images/chevronright.svg",
+                    color: AppColors.accentColor,
+                  ),
+                  function: function,
+                ),
             ],
           )),
     );

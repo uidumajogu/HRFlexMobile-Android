@@ -5,19 +5,19 @@ class PayrollData {
   static bool hasPayrollData = false;
   static ApiUtil _apiUtil = new ApiUtil();
   static bool response = false;
-  static Map<String, dynamic> payslip;
-  static Map<String, dynamic> currentPayslipDateData;
-  static Map<String, dynamic> minPayslipDateData;
-  static Map<String, dynamic> payslipReportMinRange;
-  static Map<String, dynamic> payslipReportMaxRange;
-  static List<dynamic> payrollPeriod;
-  static Map<String, dynamic> taxRemittance;
-  static Map<String, dynamic> pensionRemittance;
-  static Map<String, dynamic> nhfRemittance;
+  static Map<String, dynamic> payslip = {};
+  static Map<String, dynamic> currentPayslipDateData = {};
+  static Map<String, dynamic> minPayslipDateData = {};
+  static Map<String, dynamic> payslipReportMinRange = {};
+  static Map<String, dynamic> payslipReportMaxRange = {};
+  static List<dynamic> payrollPeriod = [];
+  static Map<String, dynamic> taxRemittance = {};
+  static Map<String, dynamic> pensionRemittance = {};
+  static Map<String, dynamic> nhfRemittance = {};
   static Map<String, dynamic> headers = APIpathUtil.getHEADERS;
   static String payrollURL = APIpathUtil.baseURL + APIpathUtil.payrollPATH;
-  static bool reportRequestHasEndDate;
-  static bool reportRequestHasStartDate;
+  static bool reportRequestHasEndDate = false;
+  static bool reportRequestHasStartDate = false;
 
   //function to get payroll periods
   Future<bool> getParoll() async {

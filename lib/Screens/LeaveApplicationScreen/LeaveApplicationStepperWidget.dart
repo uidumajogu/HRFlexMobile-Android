@@ -18,12 +18,10 @@ class LeaveApplicationStepperWidget extends StatelessWidget {
       stepper.add(Padding(
         padding: EdgeInsets.symmetric(horizontal: sw(3.0)),
         child: Container(
-            height: sh(10.0),
-            width: sh(10.0),
+            height: sh(12.0),
+            width: sh(12.0),
             decoration: BoxDecoration(
-                color: i <= index
-                    ? AppColors.lightGreyColor
-                    : AppColors.whiteColor,
+                color: i <= index ? AppColors.greenColor : AppColors.whiteColor,
                 shape: BoxShape.circle,
                 border: Border.all(color: AppColors.lightGreyColor)),
             child: null),
