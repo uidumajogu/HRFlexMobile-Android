@@ -4,7 +4,7 @@ HR Management Application
 
 ## About
 
-HR Flex is our fourth generation suite of integrated HR solutions built on a highly configurable Microsoft .NET framework that allows business users to map processes into the system and immediately deploy these processes to all the appropriate people\groups. It therefore puts the business back in control of its own HR processes. It is completely web-based and can be accessed on android mobile.
+HR Flex is our fourth generation suite of integrated HR solutions built on a highly configurable Microsoft .NET framework that allows business users to map processes into the system and immediately deploy these processes to all the appropriate people\groups. It therefore puts the business back in control of its own HR processes. It is completely web-based and can be accessed on android mobile. This is the android version.
 
 FEATURES:
 - Modular structure allows maximum flexibility and customisation
